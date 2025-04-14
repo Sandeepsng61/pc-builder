@@ -7,4 +7,5 @@ os
 logging
 uuid
 json
+gunicorn
 stripe
