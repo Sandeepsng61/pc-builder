@@ -8,7 +8,7 @@ flask
 flask-cors
 flask-login
 flask-sqlalchemy
-flask-wtf"
+flask-wtf
 gunicorn
 psycopg2-binary
 pymongo
