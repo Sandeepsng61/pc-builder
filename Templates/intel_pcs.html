@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block title %}Intel PCs - SS PC Assembler{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Intel Prebuilt PCs</h1>
+            <p class="lead">High-performance desktop computers powered by Intel processors</p>
+        </div>
+    </div>
+    
+    <!-- Filter and Search Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search Intel PCs...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="sort-options">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Processor Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Processor</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="#" class="badge bg-primary py-2 px-3 text-decoration-none filter-option" data-filter="all">All</a>
+                        <a href="#" class="badge bg-secondary py-2 px-3 text-decoration-none filter-option" data-filter="i3">Core i3</a>
+                        <a href="#" class="badge bg-secondary py-2 px-3 text-decoration-none filter-option" data-filter="i5">Core i5</a>
+                        <a href="#" class="badge bg-secondary py-2 px-3 text-decoration-none filter-option" data-filter="i7">Core i7</a>
+                        <a href="#" class="badge bg-secondary py-2 px-3 text-decoration-none filter-option" data-filter="i9">Core i9</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Price Range Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="mb-3">Price Range</h5>
+                    <div class="d-flex align-items-center">
+                        <span>₹0</span>
+                        <input type="range" class="form-range mx-2" id="price-range" min="0" max="200000" step="5000" value="200000">
+                        <span id="price-value">₹200,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Products Display -->
+    <div class="row g-4" id="products-container">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 product-card" 
+             data-price="{{ product.price }}" 
+             data-processor="{{ product.specs.processor_family if product.specs and product.specs.processor_family else '' }}">
+            <div class="card h-100">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-success">Intel</span>
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-primary">In Stock ({{ product.stock }})</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-truncate">{{ product.description }}</p>
+                    
+                    <!-- Key Specs -->
+                    <div class="specs-container">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small><i class="fas fa-microchip me-1"></i> {{ product.specs.processor if product.specs and product.specs.processor else 'Intel CPU' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-memory me-1"></i> {{ product.specs.ram if product.specs and product.specs.ram else 'RAM' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-hdd me-1"></i> {{ product.specs.storage if product.specs and product.specs.storage else 'Storage' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-tv me-1"></i> {{ product.specs.gpu if product.specs and product.specs.gpu else 'GPU' }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 mb-0">₹{{ "%.2f"|format(product.price) }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex gap-2">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-outline-secondary flex-grow-1">
+                        <i class="fas fa-info-circle me-1"></i>Details
+                    </a>
+                    <form method="POST" action="{{ url_for('add_to_cart') }}" class="flex-grow-1">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary w-100" {{ product.stock <= 0 and 'disabled' or '' }}>
+                            <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- No products found message -->
+    <div id="no-products-message" class="alert alert-info text-center py-5 d-none">
+        <i class="fas fa-info-circle fa-2x mb-3"></i>
+        <h4>No Intel PCs found</h4>
+        <p>We couldn't find any Intel-powered PCs matching your criteria. Please try different filters or check back later.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const priceRange = document.getElementById('price-range');
+        const priceValue = document.getElementById('price-value');
+        const sortSelect = document.getElementById('sort-options');
+        const filterOptions = document.querySelectorAll('.filter-option');
+        const productCards = document.querySelectorAll('.product-card');
+        const noProductsMessage = document.getElementById('no-products-message');
+        const productsContainer = document.getElementById('products-container');
+        
+        let activeFilter = 'all';
+        
+        // Initialize price display
+        priceValue.textContent = '₹' + Number(priceRange.value).toLocaleString();
+        
+        // Update price display when slider moves
+        priceRange.addEventListener('input', function() {
+            priceValue.textContent = '₹' + Number(this.value).toLocaleString();
+            applyFilters();
+        });
+        
+        // Filter by processor
+        filterOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active filter
+                filterOptions.forEach(opt => opt.classList.replace('bg-primary', 'bg-secondary'));
+                this.classList.replace('bg-secondary', 'bg-primary');
+                
+                activeFilter = this.dataset.filter;
+                applyFilters();
+            });
+        });
+        
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            applyFilters();
+        });
+        
+        // Sort functionality
+        sortSelect.addEventListener('change', function() {
+            const sortType = this.value;
+            const productCardsArray = Array.from(productCards);
+            
+            // Sort products
+            switch(sortType) {
+                case 'price-low':
+                    productCardsArray.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+                    break;
+                case 'price-high':
+                    productCardsArray.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+                    break;
+                case 'name':
+                    productCardsArray.sort((a, b) => {
+                        const nameA = a.querySelector('.card-title').textContent;
+                        const nameB = b.querySelector('.card-title').textContent;
+                        return nameA.localeCompare(nameB);
+                    });
+                    break;
+                default: // featured - original order
+                    productCardsArray.sort((a, b) => {
+                        return Array.from(productsContainer.children).indexOf(a) - Array.from(productsContainer.children).indexOf(b);
+                    });
+            }
+            
+            // Remove all products
+            productCards.forEach(card => card.remove());
+            
+            // Re-append in sorted order
+            productCardsArray.forEach(card => productsContainer.appendChild(card));
+            
+            // Apply current filters after sorting
+            applyFilters();
+        });
+        
+        // Combined filter function
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const maxPrice = parseFloat(priceRange.value);
+            let visibleCount = 0;
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-text').textContent.toLowerCase();
+                const processor = card.dataset.processor.toLowerCase();
+                const price = parseFloat(card.dataset.price);
+                
+                // Check if passes all filters
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                const matchesProcessor = activeFilter === 'all' || processor.includes(activeFilter);
+                const matchesPrice = price <= maxPrice;
+                
+                if (matchesSearch && matchesProcessor && matchesPrice) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no products message
+            if (visibleCount === 0) {
+                noProductsMessage.classList.remove('d-none');
+            } else {
+                noProductsMessage.classList.add('d-none');
+            }
+        }
+    });
+</script>
+{% endblock %}

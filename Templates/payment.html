@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment - PC Builder{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Complete Your Payment</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                        <h5>Secure Payment</h5>
+                        <p class="mb-0">You're about to be redirected to our secure payment processor.</p>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-info-circle fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="alert-heading">Order Details</h5>
+                                <p class="mb-0">Order #{{ order.order_id }}</p>
+                                <p class="mb-0">Total: ${{ "%.2f"|format(order.total_price) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button id="checkout-button" class="btn btn-primary btn-lg">
+                            <i class="fas fa-credit-card me-2"></i>Proceed to Payment
+                        </button>
+                        <a href="{{ url_for('view_cart') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Return to Cart
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var stripe = Stripe('pk_test_51P8MlJLLmgXM0fCl9aCSe50sNvBhjTnKNHcFVB7g1WvMF61H3nBexvB3vKRJ2WhunBMWEepqeX5uLUZKY2KMUwMx00wfnT6g1P');
+        var checkoutButton = document.getElementById('checkout-button');
+        
+        checkoutButton.addEventListener('click', function() {
+            // When the customer clicks on the button, redirect them to Checkout
+            stripe.redirectToCheckout({
+                // Make the id field from the Checkout Session creation API response
+                // available to this file, so you can provide it as parameter here
+                sessionId: '{{ checkout_session_id }}'
+            }).then(function (result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, display the localized error message to your customer
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

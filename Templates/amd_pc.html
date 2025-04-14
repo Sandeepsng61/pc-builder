@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}AMD Gaming PCs - PC Builder{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">AMD Gaming PCs</h1>
+            <p class="lead">High-performance gaming computers powered by AMD processors, combining multi-core performance with excellent value.</p>
+        </div>
+    </div>
+    
+    <!-- Filter and Search Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search AMD PCs...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="sort-options">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Category Navigation -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('prebuilt_pcs') }}" class="badge bg-secondary py-2 px-3 text-decoration-none">All Prebuilt PCs</a>
+                <a href="{{ url_for('intel_pcs') }}" class="badge bg-secondary py-2 px-3 text-decoration-none">Intel PCs</a>
+                <a href="{{ url_for('amd_pcs') }}" class="badge bg-primary py-2 px-3 text-decoration-none">AMD PCs</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AMD Processor Info -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-2 text-center">
+                            <i class="fab fa-amd fa-4x text-danger"></i>
+                        </div>
+                        <div class="col-md-10">
+                            <h4>Why Choose AMD?</h4>
+                            <p class="mb-0">AMD's Ryzen processors offer exceptional multi-core performance at competitive prices, making them perfect for gamers, content creators, and multi-taskers who need powerful processing capabilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Products Display -->
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 product-card" data-price="{{ product.price }}">
+            <div class="card h-100">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 mb-0">${{ "%.2f"|format(product.price) }}</span>
+                        <span class="badge bg-success">In Stock</span>
+                    </div>
+                    
+                    <!-- Specifications -->
+                    <div class="mt-3">
+                        <h6>Key Specifications:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-microchip me-2 text-danger"></i>{{ product.specs.cpu }}</li>
+                            <li><i class="fas fa-memory me-2 text-danger"></i>{{ product.specs.ram }}</li>
+                            <li><i class="fas fa-hdd me-2 text-danger"></i>{{ product.specs.storage }}</li>
+                            <li><i class="fas fa-desktop me-2 text-danger"></i>{{ product.specs.gpu }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <form method="POST" action="{{ url_for('add_to_cart') }}">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" name="quantity" value="1" min="1" max="10">
+                            </div>
+                            <div class="col-md-8">
+                                <button type="submit" class="btn btn-primary w-100 add-to-cart-btn">
+                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- No products found message -->
+    {% if products|length == 0 %}
+    <div class="alert alert-info text-center py-5">
+        <i class="fas fa-info-circle fa-2x mb-3"></i>
+        <h4>No AMD PCs found</h4>
+        <p>We couldn't find any AMD-powered PCs matching your criteria. Please try different filters or check back later.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sort functionality
+        const sortSelect = document.getElementById('sort-options');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                const products = document.querySelectorAll('.product-card');
+                const productsArray = Array.from(products);
+                const parent = products[0].parentNode;
+                
+                switch(this.value) {
+                    case 'price-low':
+                        productsArray.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+                        break;
+                    case 'price-high':
+                        productsArray.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+                        break;
+                    case 'name':
+                        productsArray.sort((a, b) => {
+                            const nameA = a.querySelector('.card-title').textContent;
+                            const nameB = b.querySelector('.card-title').textContent;
+                            return nameA.localeCompare(nameB);
+                        });
+                        break;
+                    default: // featured - original order
+                        productsArray.sort((a, b) => {
+                            return Array.from(parent.children).indexOf(a) - Array.from(parent.children).indexOf(b);
+                        });
+                }
+                
+                // Remove all products
+                products.forEach(product => product.remove());
+                
+                // Re-append in sorted order
+                productsArray.forEach(product => parent.appendChild(product));
+            });
+        }
+    });
+</script>
+{% endblock %}

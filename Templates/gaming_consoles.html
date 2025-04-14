@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block title %}Gaming Consoles - SS PC Assembler{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Gaming Consoles</h1>
+            <p class="lead">Latest gaming consoles for immersive gaming experiences</p>
+        </div>
+    </div>
+    
+    <!-- Featured Categories -->
+    <div class="row mb-5">
+        <div class="col-md-3 mb-4 mb-md-0">
+            <div class="card text-white h-100">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80" class="card-img h-100" alt="PlayStation">
+                <div class="card-img-overlay d-flex flex-column justify-content-end" style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
+                    <h5 class="card-title">PlayStation</h5>
+                    <a href="#" class="stretched-link category-filter" data-category="playstation"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4 mb-md-0">
+            <div class="card text-white h-100">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80" class="card-img h-100" alt="Xbox">
+                <div class="card-img-overlay d-flex flex-column justify-content-end" style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
+                    <h5 class="card-title">Xbox</h5>
+                    <a href="#" class="stretched-link category-filter" data-category="xbox"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4 mb-md-0">
+            <div class="card text-white h-100">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80" class="card-img h-100" alt="Nintendo Switch">
+                <div class="card-img-overlay d-flex flex-column justify-content-end" style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
+                    <h5 class="card-title">Nintendo</h5>
+                    <a href="#" class="stretched-link category-filter" data-category="nintendo"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white h-100">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80" class="card-img h-100" alt="Handheld Consoles">
+                <div class="card-img-overlay d-flex flex-column justify-content-end" style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
+                    <h5 class="card-title">Handheld</h5>
+                    <a href="#" class="stretched-link category-filter" data-category="handheld"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filter and Search Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search gaming consoles...">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="sort-options">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Active Filters -->
+    <div id="active-filters" class="mb-4 d-none">
+        <div class="d-flex align-items-center">
+            <span class="me-2">Active Filters:</span>
+            <div id="filter-tags" class="d-flex flex-wrap gap-2">
+                <!-- Filter tags will be added here dynamically -->
+            </div>
+            <button id="clear-all-filters" class="btn btn-sm btn-outline-danger ms-auto">Clear All</button>
+        </div>
+    </div>
+    
+    <!-- Products Display -->
+    <div class="row g-4" id="products-container">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 product-card" 
+             data-price="{{ product.price }}"
+             data-category="{{ product.specs.brand if product.specs and product.specs.brand else '' }}">
+            <div class="card h-100">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-secondary">{{ product.specs.brand|capitalize if product.specs and product.specs.brand else 'Console' }}</span>
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-success">In Stock ({{ product.stock }})</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text text-truncate">{{ product.description }}</p>
+                    
+                    <!-- Key Specs -->
+                    <div class="specs-container">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <small><i class="fas fa-microchip me-1"></i> {{ product.specs.processor if product.specs and product.specs.processor else 'CPU' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-memory me-1"></i> {{ product.specs.storage if product.specs and product.specs.storage else 'Storage' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-tv me-1"></i> {{ product.specs.resolution if product.specs and product.specs.resolution else 'Resolution' }}</small>
+                            </div>
+                            <div class="col-6">
+                                <small><i class="fas fa-gamepad me-1"></i> {{ product.specs.controllers if product.specs and product.specs.controllers else 'Controller' }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 mb-0">₹{{ "%.2f"|format(product.price) }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex gap-2">
+                    <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-outline-secondary flex-grow-1">
+                        <i class="fas fa-info-circle me-1"></i>Details
+                    </a>
+                    <form method="POST" action="{{ url_for('add_to_cart') }}" class="flex-grow-1">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary w-100" {{ product.stock <= 0 and 'disabled' or '' }}>
+                            <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- No products found message -->
+    <div id="no-products-message" class="alert alert-info text-center py-5 d-none">
+        <i class="fas fa-info-circle fa-2x mb-3"></i>
+        <h4>No gaming consoles found</h4>
+        <p>We couldn't find any gaming consoles matching your criteria. Please try different filters or check back later.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const sortSelect = document.getElementById('sort-options');
+        const productCards = document.querySelectorAll('.product-card');
+        const noProductsMessage = document.getElementById('no-products-message');
+        const productsContainer = document.getElementById('products-container');
+        const categoryFilters = document.querySelectorAll('.category-filter');
+        const activeFiltersContainer = document.getElementById('active-filters');
+        const filterTags = document.getElementById('filter-tags');
+        const clearAllFiltersBtn = document.getElementById('clear-all-filters');
+        
+        let activeCategory = null;
+        
+        // Filter by category
+        categoryFilters.forEach(filter => {
+            filter.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const category = this.dataset.category;
+                
+                if (activeCategory === category) {
+                    // If clicking the active category, deselect it
+                    activeCategory = null;
+                    activeFiltersContainer.classList.add('d-none');
+                    filterTags.innerHTML = '';
+                } else {
+                    // Select the new category
+                    activeCategory = category;
+                    activeFiltersContainer.classList.remove('d-none');
+                    filterTags.innerHTML = `
+                        <span class="badge bg-primary d-flex align-items-center">
+                            ${category.charAt(0).toUpperCase() + category.slice(1)}
+                            <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" id="clear-category-filter"></button>
+                        </span>
+                    `;
+                    
+                    // Add event listener to the clear button
+                    document.getElementById('clear-category-filter').addEventListener('click', function() {
+                        activeCategory = null;
+                        activeFiltersContainer.classList.add('d-none');
+                        filterTags.innerHTML = '';
+                        applyFilters();
+                    });
+                }
+                
+                applyFilters();
+            });
+        });
+        
+        // Clear all filters
+        clearAllFiltersBtn.addEventListener('click', function() {
+            activeCategory = null;
+            activeFiltersContainer.classList.add('d-none');
+            filterTags.innerHTML = '';
+            searchInput.value = '';
+            applyFilters();
+        });
+        
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                activeFiltersContainer.classList.remove('d-none');
+                
+                // Check if search filter tag already exists
+                const existingSearchTag = document.getElementById('search-filter-tag');
+                if (existingSearchTag) {
+                    existingSearchTag.querySelector('span').textContent = `Search: ${this.value}`;
+                } else {
+                    // Create new search filter tag
+                    const searchTag = document.createElement('div');
+                    searchTag.id = 'search-filter-tag';
+                    searchTag.className = 'badge bg-info d-flex align-items-center';
+                    searchTag.innerHTML = `
+                        <span>Search: ${this.value}</span>
+                        <button type="button" class="btn-close btn-close-white ms-2" aria-label="Close" id="clear-search-filter"></button>
+                    `;
+                    filterTags.appendChild(searchTag);
+                    
+                    // Add event listener to the clear button
+                    document.getElementById('clear-search-filter').addEventListener('click', function() {
+                        searchInput.value = '';
+                        document.getElementById('search-filter-tag').remove();
+                        if (filterTags.children.length === 0) {
+                            activeFiltersContainer.classList.add('d-none');
+                        }
+                        applyFilters();
+                    });
+                }
+            } else {
+                // Remove search filter tag if input is empty
+                const searchTag = document.getElementById('search-filter-tag');
+                if (searchTag) {
+                    searchTag.remove();
+                    if (filterTags.children.length === 0) {
+                        activeFiltersContainer.classList.add('d-none');
+                    }
+                }
+            }
+            
+            applyFilters();
+        });
+        
+        // Sort functionality
+        sortSelect.addEventListener('change', function() {
+            const sortType = this.value;
+            const productCardsArray = Array.from(productCards);
+            
+            // Sort products
+            switch(sortType) {
+                case 'price-low':
+                    productCardsArray.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+                    break;
+                case 'price-high':
+                    productCardsArray.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+                    break;
+                case 'name':
+                    productCardsArray.sort((a, b) => {
+                        const nameA = a.querySelector('.card-title').textContent;
+                        const nameB = b.querySelector('.card-title').textContent;
+                        return nameA.localeCompare(nameB);
+                    });
+                    break;
+                default: // featured - original order
+                    productCardsArray.sort((a, b) => {
+                        return Array.from(productsContainer.children).indexOf(a) - Array.from(productsContainer.children).indexOf(b);
+                    });
+            }
+            
+            // Remove all products
+            productCards.forEach(card => card.remove());
+            
+            // Re-append in sorted order
+            productCardsArray.forEach(card => productsContainer.appendChild(card));
+            
+            // Apply current filters after sorting
+            applyFilters();
+        });
+        
+        // Combined filter function
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let visibleCount = 0;
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-text').textContent.toLowerCase();
+                const category = card.dataset.category.toLowerCase();
+                
+                // Check if passes all filters
+                const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                const matchesCategory = activeCategory === null || category === activeCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no products message
+            if (visibleCount === 0) {
+                noProductsMessage.classList.remove('d-none');
+            } else {
+                noProductsMessage.classList.add('d-none');
+            }
+        }
+    });
+</script>
+{% endblock %}

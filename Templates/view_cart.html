@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Cart - PC Builder{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Your Shopping Cart</h1>
+            <p class="lead">Review your items before checkout</p>
+        </div>
+    </div>
+    
+    {% if cart and cart|length > 0 %}
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-dark">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Cart Items ({{ cart|length }})</h5>
+                            <a href="{{ url_for('clear_cart') }}" id="empty-cart-button" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash me-1"></i>Empty Cart
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% for item in cart %}
+                            <div class="cart-item mb-3 pb-3 border-bottom" data-price="{{ item.product.price }}">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5 class="mb-1">{{ item.product.name }}</h5>
+                                        <p class="text-muted mb-0">{{ item.product.category|capitalize }}</p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="quantity-control">
+                                            <form id="update-form-{{ item.product.id }}" action="{{ url_for('update_cart') }}" method="POST" class="d-none">
+                                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                            </form>
+                                            <button class="btn btn-sm btn-outline-secondary quantity-decrement">-</button>
+                                            <input type="number" class="form-control mx-2 cart-quantity-input" value="{{ item.quantity }}" min="1" max="10" data-product-id="{{ item.product.id }}">
+                                            <button class="btn btn-sm btn-outline-secondary quantity-increment">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <h5 class="mb-0 item-total">${{ "%.2f"|format(item.product.price * item.quantity) }}</h5>
+                                    </div>
+                                    <div class="col-md-1 text-end">
+                                        <form id="remove-form-{{ item.product.id }}" action="{{ url_for('remove_from_cart') }}" method="POST" class="d-none">
+                                            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                        </form>
+                                        <button class="btn btn-sm btn-outline-danger remove-from-cart" data-product-id="{{ item.product.id }}">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                    </a>
+                    <a href="{{ url_for('update_cart') }}" class="btn btn-primary">
+                        <i class="fas fa-sync me-2"></i>Update Cart
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-dark">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span id="cart-total">${{ "%.2f"|format(total) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong>${{ "%.2f"|format(total) }}</strong>
+                        </div>
+                        <div class="d-grid">
+                            <a href="{{ url_for('checkout') }}" class="btn btn-success">
+                                <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header bg-dark">
+                        <h5 class="mb-0">We Accept</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-3">
+                                <i class="fab fa-cc-visa fa-2x text-muted"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fab fa-cc-mastercard fa-2x text-muted"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fab fa-cc-amex fa-2x text-muted"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fab fa-cc-paypal fa-2x text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-shopping-cart fa-4x mb-3 text-muted"></i>
+                <h3>Your Cart is Empty</h3>
+                <p class="mb-4">Looks like you haven't added any products to your cart yet.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+{% endblock %}
