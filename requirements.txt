@@ -1,0 +1,10 @@
+flask
+flask_cors
+werkzeug.security
+flask_sqlalchemy
+pytz
+os
+logging
+uuid
+json
+stripe
