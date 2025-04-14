@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Cart - SS PC Assembler{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Your Shopping Cart</h1>
+            <p class="lead">Review your items and proceed to checkout</p>
+        </div>
+    </div>
+    
+    {% if cart and cart|length > 0 %}
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Cart Items -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0">Cart Items ({{ cart|length }})</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" width="60" class="me-3">
+                                            <div>
+                                                <h6 class="mb-0">{{ item.product.name }}</h6>
+                                                <small class="text-muted">{{ item.product.category|capitalize }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>₹{{ "%.2f"|format(item.product.price) }}</td>
+                                    <td>
+                                        <form action="{{ url_for('update_cart') }}" method="POST" class="d-flex align-items-center quantity-form">
+                                            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                            <div class="input-group input-group-sm" style="width: 100px;">
+                                                <button type="button" class="btn btn-outline-secondary quantity-decrement">-</button>
+                                                <input type="number" class="form-control text-center" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}">
+                                                <button type="button" class="btn btn-outline-secondary quantity-increment">+</button>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 update-cart-btn">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>₹{{ "%.2f"|format(item.product.price * item.quantity) }}</td>
+                                    <td>
+                                        <form action="{{ url_for('remove_from_cart') }}" method="POST">
+                                            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash me-1"></i>Remove
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Continue Shopping
+                        </a>
+                        <form action="{{ url_for('clear_cart') }}" method="POST">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-trash me-1"></i>Clear Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <!-- Order Summary -->
+            <div class="card">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span>₹{{ "%.2f"|format(total) }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping:</span>
+                        <span>₹{{ "%.2f"|format(100) }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tax (18% GST):</span>
+                        <span>₹{{ "%.2f"|format(total * 0.18) }}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total:</strong>
+                        <strong>₹{{ "%.2f"|format(total + 100 + (total * 0.18)) }}</strong>
+                    </div>
+                    <a href="{{ url_for('checkout') }}" class="btn btn-success w-100">
+                        <i class="fas fa-lock me-2"></i>Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Promo Code -->
+            <div class="card mt-4">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0">Promo Code</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Enter promo code">
+                            <button class="btn btn-outline-primary" type="button">Apply</button>
+                        </div>
+                    </form>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">WELCOME10</h6>
+                                    <small class="text-muted">10% off your first order</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary">Apply</button>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">FREESHIP</h6>
+                                    <small class="text-muted">Free shipping on orders over ₹10,000</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary">Apply</button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card text-center py-5">
+        <div class="card-body">
+            <i class="fas fa-shopping-cart fa-4x mb-3 text-muted"></i>
+            <h3>Your cart is empty</h3>
+            <p class="mb-4">Looks like you haven't added any products to your cart yet.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Start Shopping</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quantity controls
+        const forms = document.querySelectorAll('.quantity-form');
+        
+        forms.forEach(form => {
+            const incrementBtn = form.querySelector('.quantity-increment');
+            const decrementBtn = form.querySelector('.quantity-decrement');
+            const quantityInput = form.querySelector('input[name="quantity"]');
+            const updateBtn = form.querySelector('.update-cart-btn');
+            
+            incrementBtn.addEventListener('click', function() {
+                const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+                let value = parseInt(quantityInput.value);
+                if (value < maxQuantity) {
+                    quantityInput.value = value + 1;
+                    updateBtn.classList.add('btn-primary');
+                    updateBtn.classList.remove('btn-outline-primary');
+                }
+            });
+            
+            decrementBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                    updateBtn.classList.add('btn-primary');
+                    updateBtn.classList.remove('btn-outline-primary');
+                }
+            });
+            
+            quantityInput.addEventListener('change', function() {
+                updateBtn.classList.add('btn-primary');
+                updateBtn.classList.remove('btn-outline-primary');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - PC Builder{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('components') if product.category in ['cpu', 'gpu', 'motherboard', 'ram', 'storage', 'psu', 'case', 'cooling'] else url_for('prebuilt_pcs') if product.category == 'prebuilt' else url_for('gaming_consoles') }}">{{ product.category|capitalize }}s</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row mb-5">
+        <!-- Product Image -->
+        <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ product.image_url }}" class="img-fluid" alt="{{ product.name }}">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Details -->
+        <div class="col-lg-7">
+            <h1 class="mb-2">{{ product.name }}</h1>
+            <p class="text-muted">Category: {{ product.category|capitalize }}</p>
+            
+            <div class="mb-3">
+                <span class="h3 text-primary">${{ "%.2f"|format(product.price) }}</span>
+                <span class="badge {{ product.stock > 0 and 'bg-success' or 'bg-danger' }} ms-2">{{ product.stock > 0 and 'In Stock' or 'Out of Stock' }}</span>
+            </div>
+            
+            <p class="mb-4">{{ product.description }}</p>
+            
+            <form method="POST" action="{{ url_for('add_to_cart') }}" class="mb-4">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <div class="row g-2">
+                    <div class="col-lg-3 col-md-4">
+                        <div class="input-group">
+                            <button type="button" class="btn btn-outline-secondary quantity-decrement">-</button>
+                            <input type="number" class="form-control text-center" name="quantity" value="1" min="1" max="{{ product.stock }}">
+                            <button type="button" class="btn btn-outline-secondary quantity-increment">+</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-8 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1 add-to-cart-btn" {{ product.stock <= 0 and 'disabled' or '' }}>
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                        <form action="{{ url_for('add_to_wishlist') }}" method="POST" class="d-inline">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Specifications -->
+            <div class="card mt-4">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0">Specifications</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% if product.specs %}
+                            {% for key, value in product.specs.items() %}
+                                <div class="col-md-6 mb-2">
+                                    <div class="d-flex">
+                                        <strong class="me-2 text-capitalize">{{ key.replace('_', ' ') }}:</strong>
+                                        <span>{{ value }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-12">
+                                <p class="mb-0">No detailed specifications available.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h5 class="mb-0">Related Products</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-4">
+                {% for related in related_products %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 product-card">
+                        <img src="{{ related.image_url }}" class="card-img-top" alt="{{ related.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ related.name }}</h5>
+                            <p class="card-text text-muted">${{ "%.2f"|format(related.price) }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a href="{{ url_for('product_detail', product_id=related.id) }}" class="btn btn-outline-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quantity controls
+        const quantityInput = document.querySelector('input[name="quantity"]');
+        const incrementBtn = document.querySelector('.quantity-increment');
+        const decrementBtn = document.querySelector('.quantity-decrement');
+        
+        if (quantityInput && incrementBtn && decrementBtn) {
+            incrementBtn.addEventListener('click', function() {
+                const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+                let value = parseInt(quantityInput.value);
+                if (value < maxQuantity) {
+                    quantityInput.value = value + 1;
+                }
+            });
+            
+            decrementBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

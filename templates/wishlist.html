@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Wishlist - SS PC Assembler{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">Your Wishlist</h1>
+            <p class="lead">Products you've saved for later</p>
+        </div>
+    </div>
+    
+    {% if wishlist_items and wishlist_items|length > 0 %}
+    <div class="row g-4">
+        {% for item in wishlist_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <img src="{{ item.product.image_url }}" class="card-img-top" alt="{{ item.product.name }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="badge bg-secondary">{{ item.product.category|capitalize }}</span>
+                        {% if item.product.stock > 0 %}
+                            <span class="badge bg-success">In Stock ({{ item.product.stock }})</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <h5 class="card-title">{{ item.product.name }}</h5>
+                    <p class="card-text">{{ item.product.description }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h5 mb-0">₹{{ "%.2f"|format(item.product.price) }}</span>
+                        <small class="text-muted">Added on {{ item.created_at.strftime('%B %d, %Y') }}</small>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 d-flex gap-2">
+                    <a href="{{ url_for('product_detail', product_id=item.product.id) }}" class="btn btn-outline-secondary flex-grow-1">
+                        <i class="fas fa-info-circle me-1"></i>Details
+                    </a>
+                    <form method="POST" action="{{ url_for('add_to_cart') }}" class="flex-grow-1">
+                        <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary w-100" {{ item.product.stock <= 0 and 'disabled' or '' }}>
+                            <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                        </button>
+                    </form>
+                </div>
+                <button class="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2 remove-wishlist-btn" 
+                        data-product-id="{{ item.product.id }}" data-bs-toggle="modal" data-bs-target="#removeWishlistModal">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card text-center py-5">
+        <div class="card-body">
+            <i class="fas fa-heart fa-4x mb-3 text-muted"></i>
+            <h3>Your wishlist is empty</h3>
+            <p class="mb-4">Products you add to your wishlist will appear here.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Start Shopping</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Remove from wishlist confirmation modal -->
+<div class="modal fade" id="removeWishlistModal" tabindex="-1" aria-labelledby="removeWishlistModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeWishlistModalLabel">Remove from Wishlist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove this product from your wishlist?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="remove-wishlist-form" method="POST" action="{{ url_for('remove_from_wishlist') }}">
+                    <input type="hidden" name="product_id" id="remove-wishlist-product-id">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove from wishlist confirmation
+        const removeButtons = document.querySelectorAll('.remove-wishlist-btn');
+        const removeForm = document.getElementById('remove-wishlist-form');
+        const productIdInput = document.getElementById('remove-wishlist-product-id');
+        
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.dataset.productId;
+                productIdInput.value = productId;
+            });
+        });
+    });
+</script>
+{% endblock %}
