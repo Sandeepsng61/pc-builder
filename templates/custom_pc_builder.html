@@ -1,558 +1,1653 @@
 {% extends 'base.html' %}
 
-{% block title %}Custom PC Builder - PC Builder{% endblock %}
+{% block title %}Custom PC Builder - SS PC Assembler{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="mb-3">Custom PC Builder</h1>
-            <p class="lead">Build your dream PC by selecting compatible components</p>
-        </div>
-    </div>
-    
     <div class="row">
+        <div class="col-12">
+            <h1 class="page-heading">Custom PC Builder</h1>
+            <p class="text-center mb-5">Build your perfect PC by selecting components that match your needs and budget.
+            </p>
+        </div>
+    </div>
+
+    <!-- PC Building Interface -->
+    <div class="row">
+        <!-- Components Selection -->
         <div class="col-lg-8">
-            <!-- PC Builder Interface -->
-            <div class="pc-builder-container p-4 mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="mb-0">Select Your Components</h4>
-                    <div class="progress flex-grow-1 ms-3" style="height: 10px;">
-                        <div id="build-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                
-                <!-- CPU Selection -->
-                <div class="component-section">
-                    <div id="cpu-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select a CPU</h5>
-                                <p class="text-muted mb-0">Central Processing Unit</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cpu-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="cpu">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Motherboard Selection -->
-                <div class="component-section">
-                    <div id="motherboard-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select a Motherboard</h5>
-                                <p class="text-muted mb-0">Main Circuit Board</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#motherboard-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="motherboard">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- GPU Selection -->
-                <div class="component-section">
-                    <div id="gpu-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select a GPU</h5>
-                                <p class="text-muted mb-0">Graphics Processing Unit</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#gpu-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="gpu">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- RAM Selection -->
-                <div class="component-section">
-                    <div id="ram-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select RAM</h5>
-                                <p class="text-muted mb-0">Memory</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#ram-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="ram">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Storage Selection -->
-                <div class="component-section">
-                    <div id="storage-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select Storage</h5>
-                                <p class="text-muted mb-0">SSD/HDD</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#storage-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="storage">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- PSU Selection -->
-                <div class="component-section">
-                    <div id="psu-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select a Power Supply</h5>
-                                <p class="text-muted mb-0">Power Supply Unit</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#psu-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="psu">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Case Selection -->
-                <div class="component-section">
-                    <div id="case-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select a Case</h5>
-                                <p class="text-muted mb-0">Computer Case</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#case-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="case">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Cooling Selection -->
-                <div class="component-section">
-                    <div id="cooling-slot" class="component-slot empty">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h5 class="component-name">Select CPU Cooling</h5>
-                                <p class="text-muted mb-0">CPU Cooler</p>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <span class="component-price"></span>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#cooling-modal">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger component-clear-btn d-none" data-category="cooling">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Compatibility Warnings -->
-            <div id="compatibility-warnings" class="mb-4"></div>
-        </div>
-        
-        <div class="col-lg-4">
-            <!-- Build Summary -->
             <div class="card mb-4">
-                <div class="card-header bg-dark">
-                    <h5 class="mb-0">Build Summary</h5>
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">1. Choose Your Components</h4>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Price:</span>
-                        <span id="total-price">₹0.00</span>
-                    </div>
-                    <hr>
-                    <div class="d-grid">
-                        <button id="add-build-to-cart" class="btn btn-success" disabled>
-                            <i class="fas fa-shopping-cart me-2"></i>Add Build to Cart
-                        </button>
-                    </div>
-                    <div class="mt-3">
-                        <small class="text-muted">* Select at least CPU, Motherboard, and RAM to continue</small>
+                    <form id="pc-builder-form" action="{{ url_for('save_custom_pc') }}" method="POST">
+                        <!-- CPU Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-microchip me-2"></i> Processor (CPU)
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="cpu-brand" name="cpu_brand">
+                                        <option value="" selected disabled>-- Select CPU Brand --</option>
+                                        <option value="intel">Intel</option>
+                                        <option value="amd">AMD</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="cpu-model" name="cpu_model" disabled>
+                                        <option value="" selected disabled>-- Select CPU Model --</option>
+                                        <!-- Options will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="cpu-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="cpu">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Motherboard Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-server me-2"></i> Motherboard
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="motherboard-brand" name="motherboard_brand">
+                                        <option value="" selected disabled>-- Select Motherboard Brand --</option>
+                                        <option value="asus">ASUS</option>
+                                        <option value="gigabyte">Gigabyte</option>
+                                        <option value="msi">MSI</option>
+                                        <option value="asrock">ASRock</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="motherboard-model" name="motherboard_model"
+                                        disabled>
+                                        <option value="" selected disabled>-- Select Motherboard Model --</option>
+                                        <!-- Options will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="motherboard-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="motherboard">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RAM Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-memory me-2"></i> Memory (RAM)
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="ram-capacity" name="ram_capacity">
+                                        <option value="" selected disabled>-- Select RAM Capacity --</option>
+                                        <option value="8gb">8GB (2x4GB)</option>
+                                        <option value="16gb">16GB (2x8GB)</option>
+                                        <option value="32gb">32GB (2x16GB)</option>
+                                        <option value="64gb">64GB (2x32GB)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="ram-speed" name="ram_speed">
+                                        <option value="" selected disabled>-- Select RAM Speed --</option>
+                                        <option value="2666mhz">DDR4-2666MHz</option>
+                                        <option value="3000mhz">DDR4-3000MHz</option>
+                                        <option value="3200mhz">DDR4-3200MHz</option>
+                                        <option value="3600mhz">DDR4-3600MHz</option>
+                                        <option value="4000mhz">DDR4-4000MHz</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="ram-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="ram">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Storage Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-hdd me-2"></i> Storage
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="storage-type" name="storage_type">
+                                        <option value="" selected disabled>-- Select Storage Type --</option>
+                                        <option value="sata_ssd">SATA SSD</option>
+                                        <option value="nvme_ssd">NVMe SSD</option>
+                                        <option value="hdd">Hard Drive (HDD)</option>
+                                        <option value="hybrid">Hybrid (SSD + HDD)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="storage-capacity" name="storage_capacity" disabled>
+                                        <option value="" selected disabled>-- Select Storage Capacity --</option>
+                                        <!-- Options will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="storage-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="storage">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="add-storage">
+                                    <i class="fas fa-plus me-1"></i> Add Additional Storage
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Graphics Card Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-tv me-2"></i> Graphics Card (GPU)
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="gpu-brand" name="gpu_brand">
+                                        <option value="" selected disabled>-- Select GPU Brand --</option>
+                                        <option value="nvidia">NVIDIA</option>
+                                        <option value="amd">AMD</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="gpu-model" name="gpu_model" disabled>
+                                        <option value="" selected disabled>-- Select GPU Model --</option>
+                                        <!-- Options will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="gpu-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="gpu">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Power Supply Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-bolt me-2"></i> Power Supply (PSU)
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="psu-wattage" name="psu_wattage">
+                                        <option value="" selected disabled>-- Select PSU Wattage --</option>
+                                        <option value="500w">500W</option>
+                                        <option value="650w">650W</option>
+                                        <option value="750w">750W</option>
+                                        <option value="850w">850W</option>
+                                        <option value="1000w">1000W</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="psu-certification" name="psu_certification">
+                                        <option value="" selected disabled>-- Select PSU Rating --</option>
+                                        <option value="80plus">80 PLUS</option>
+                                        <option value="80plus_bronze">80 PLUS Bronze</option>
+                                        <option value="80plus_silver">80 PLUS Silver</option>
+                                        <option value="80plus_gold">80 PLUS Gold</option>
+                                        <option value="80plus_platinum">80 PLUS Platinum</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="psu-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="psu">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PC Case Selection -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-desktop me-2"></i> PC Case
+                                <span class="required-badge bg-danger text-white px-2 py-1 rounded-pill ms-2"
+                                    style="font-size: 0.7rem;">Required</span>
+                            </h5>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-select" id="case-size" name="case_size">
+                                        <option value="" selected disabled>-- Select Case Size --</option>
+                                        <option value="full_tower">Full Tower</option>
+                                        <option value="mid_tower">Mid Tower</option>
+                                        <option value="mini_tower">Mini Tower</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-select" id="case-model" name="case_model" disabled>
+                                        <option value="" selected disabled>-- Select Case Model --</option>
+                                        <!-- Options will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selected-component p-3 border rounded d-none" id="case-selection">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="selected-component-name fw-bold"></span>
+                                        <p class="text-muted mb-0 selected-component-details"></p>
+                                    </div>
+                                    <div>
+                                        <span class="selected-component-price text-primary fw-bold"></span>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2 remove-selection"
+                                            data-component="case">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Optional Components -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-plus-circle me-2"></i> Optional Components
+                            </h5>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="add-cpu-cooler"
+                                    name="include_cpu_cooler">
+                                <label class="form-check-label" for="add-cpu-cooler">
+                                    Add CPU Cooler
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="add-case-fans"
+                                    name="include_case_fans">
+                                <label class="form-check-label" for="add-case-fans">
+                                    Add Extra Case Fans
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="add-wifi" name="include_wifi">
+                                <label class="form-check-label" for="add-wifi">
+                                    Add Wi-Fi Card
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="add-windows" name="include_windows">
+                                <label class="form-check-label" for="add-windows">
+                                    Include Windows OS
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- PC Name -->
+                        <div class="component-section mb-4">
+                            <h5 class="component-title">
+                                <i class="fas fa-tag me-2"></i> Name Your PC Build
+                            </h5>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="pc-build-name" name="pc_build_name"
+                                    placeholder="My Custom Gaming PC">
+                                <div class="form-text">Give your PC build a name to easily identify it.</div>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="button" class="btn btn-danger me-2" id="reset-form">Clear All
+                                Selections</button>
+                            <button type="submit" class="btn btn-primary" id="add-to-cart-button" disabled>Add to
+                                Cart</button>
+                            <input type="hidden" name="total_price" id="total-price-input" value="0">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Compatibility Check Section -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Compatibility Check</h5>
+                </div>
+                <div class="card-body">
+                    <div id="compatibility-issues">
+                        <p class="text-muted mb-0"><i class="fas fa-info-circle me-2"></i> Select components to check
+                            compatibility.</p>
                     </div>
                 </div>
             </div>
-            
-            <!-- Building Tips -->
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <!-- Component Summary -->
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">2. Your Build Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="build-summary">
+                        <ul class="list-group list-group-flush component-list">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-microchip text-primary me-2"></i> CPU
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-server text-primary me-2"></i> Motherboard
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-memory text-primary me-2"></i> RAM
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-hdd text-primary me-2"></i> Storage
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-tv text-primary me-2"></i> Graphics Card
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-bolt text-primary me-2"></i> Power Supply
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-desktop text-primary me-2"></i> PC Case
+                                </div>
+                                <span class="component-status">Not Selected</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Summary -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">3. Price Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="price-summary">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Base Components:</span>
+                            <span class="base-components-price">₹0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Optional Add-ons:</span>
+                            <span class="addons-price">₹0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Assembly Fee:</span>
+                            <span class="assembly-fee">₹00.00</span> <!-- Updated assembly fee in INR -->
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Estimated Total:</span>
+                            <span class="total-price">₹00.00</span> <!-- Updated total in INR -->
+                        </div>
+                        <p class="text-muted mt-3 mb-0"><small>* Prices subject to change based on availability</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Performance Metrics -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">4. Performance Preview</h4>
+                </div>
+                <div class="card-body">
+                    <div class="performance-section">
+                        <p class="text-muted" id="performance-placeholder">Complete your build to see estimated
+                            performance.</p>
+                        <div class="d-none" id="performance-metrics">
+                            <div class="mb-3">
+                                <label class="form-label d-flex justify-content-between">
+                                    <span>Gaming Performance</span>
+                                    <span class="performance-rating" id="gaming-rating">n/a</span>
+                                </label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" id="gaming-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label d-flex justify-content-between">
+                                    <span>Productivity</span>
+                                    <span class="performance-rating" id="productivity-rating">n/a</span>
+                                </label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" id="productivity-progress" style="width: 0%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label d-flex justify-content-between">
+                                    <span>Content Creation</span>
+                                    <span class="performance-rating" id="content-rating">n/a</span>
+                                </label>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning" id="content-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="game-fps mt-4">
+                                <h6>Estimated FPS in Popular Games</h6>
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>Fortnite (1080p, High)</td>
+                                            <td class="text-end" id="fps-fortnite">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Call of Duty (1080p, High)</td>
+                                            <td class="text-end" id="fps-cod">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cyberpunk 2077 (1080p, Medium)</td>
+                                            <td class="text-end" id="fps-cyberpunk">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PC Building Tips Section -->
+    <div class="row mt-4">
+        <div class="col-12">
             <div class="card">
-                <div class="card-header bg-dark">
-                    <h5 class="mb-0">Building Tips</h5>
+                <div class="card-header">
+                    <h4 class="mb-0">PC Building Tips & Guidance</h4>
                 </div>
                 <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Select compatible CPU and motherboard sockets</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Ensure RAM is compatible with your motherboard</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Choose a PSU with sufficient wattage</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Make sure components fit in your case</li>
-                        <li><i class="fas fa-check-circle text-success me-2"></i>Consider future upgradeability</li>
+                    <div class="row">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-bolt fa-3x text-warning"></i>
+                            </div>
+                            <h5 class="text-center">Power Requirements</h5>
+                            <p>Always ensure your power supply has enough wattage to support all components, especially
+                                high-end GPUs. We recommend at least 30% headroom above your estimated power draw.</p>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-thermometer-half fa-3x text-danger"></i>
+                            </div>
+                            <h5 class="text-center">Cooling Considerations</h5>
+                            <p>High-performance CPUs and GPUs generate significant heat. Consider aftermarket CPU
+                                coolers and cases with good airflow for an optimal thermal environment.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-microchip fa-3x text-primary"></i>
+                            </div>
+                            <h5 class="text-center">Component Compatibility</h5>
+                            <p>Ensure your CPU is compatible with your motherboard socket type. RAM speed should be
+                                supported by both CPU and motherboard for optimal performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Component data (would typically come from a database)
+        const componentData = {
+            cpus: {
+                intel: [
+                    { id: 'i3-12100f', name: 'Intel Core i3-12100F', details: '4-Core, 8-Thread, 3.3GHz Base, 4.3GHz Boost', price: 109.99 },
+                    { id: 'i5-12400f', name: 'Intel Core i5-12400F', details: '6-Core, 12-Thread, 2.5GHz Base, 4.4GHz Boost', price: 189.99 },
+                    { id: 'i5-13600k', name: 'Intel Core i5-13600K', details: '14-Core, 20-Thread, 3.5GHz Base, 5.1GHz Boost', price: 319.99 },
+                    { id: 'i7-13700k', name: 'Intel Core i7-13700K', details: '16-Core, 24-Thread, 3.4GHz Base, 5.4GHz Boost', price: 419.99 },
+                    { id: 'i9-13900k', name: 'Intel Core i9-13900K', details: '24-Core, 32-Thread, 3.0GHz Base, 5.8GHz Boost', price: 599.99 },
+                    // Intel APUs (CPUs with integrated graphics)
+                    { id: 'i3-12100', name: 'Intel Core i3-12100 (with iGPU)', details: '4-Core, 8-Thread, 3.3GHz Base, 4.3GHz Boost, Intel UHD 730', price: 129.99, isAPU: true },
+                    { id: 'i5-12600', name: 'Intel Core i5-12600 (with iGPU)', details: '6-Core, 12-Thread, 3.3GHz Base, 4.8GHz Boost, Intel UHD 770', price: 229.99, isAPU: true },
+                    { id: 'i7-12700', name: 'Intel Core i7-12700 (with iGPU)', details: '12-Core, 20-Thread, 2.1GHz Base, 4.9GHz Boost, Intel UHD 770', price: 359.99, isAPU: true }
+                ],
+                amd: [
+                    { id: 'r5-5600', name: 'AMD Ryzen 5 5600', details: '6-Core, 12-Thread, 3.5GHz Base, 4.4GHz Boost', price: 159.99 },
+                    { id: 'r5-7600x', name: 'AMD Ryzen 5 7600X', details: '6-Core, 12-Thread, 4.7GHz Base, 5.3GHz Boost', price: 299.99 },
+                    { id: 'r7-5800x', name: 'AMD Ryzen 7 5800X', details: '8-Core, 16-Thread, 3.8GHz Base, 4.7GHz Boost', price: 249.99 },
+                    { id: 'r7-7700x', name: 'AMD Ryzen 7 7700X', details: '8-Core, 16-Thread, 4.5GHz Base, 5.4GHz Boost', price: 399.99 },
+                    { id: 'r9-7950x', name: 'AMD Ryzen 9 7950X', details: '16-Core, 32-Thread, 4.5GHz Base, 5.7GHz Boost', price: 699.99 },
+                    // AMD APUs (CPUs with integrated graphics)
+                    { id: 'r5-5600g', name: 'AMD Ryzen 5 5600G (with Vega 7)', details: '6-Core, 12-Thread, 3.9GHz Base, 4.4GHz Boost, Radeon Vega 7 Graphics', price: 179.99, isAPU: true },
+                    { id: 'r7-5700g', name: 'AMD Ryzen 7 5700G (with Vega 8)', details: '8-Core, 16-Thread, 3.8GHz Base, 4.6GHz Boost, Radeon Vega 8 Graphics', price: 259.99, isAPU: true },
+                    { id: 'r7-7700g', name: 'AMD Ryzen 7 7700G (with RDNA 2)', details: '8-Core, 16-Thread, 3.8GHz Base, 5.1GHz Boost, Radeon 680M Graphics', price: 329.99, isAPU: true }
+                ]
+            },
+            motherboards: {
+                asus: [
+                    { id: 'asus-prime-b660', name: 'ASUS PRIME B660-PLUS', details: 'Intel B660, ATX, DDR4, PCIe 4.0', price: 139.99, socket: 'intel' },
+                    { id: 'asus-rog-b650', name: 'ASUS ROG STRIX B650-E', details: 'AMD B650, ATX, DDR5, PCIe 5.0', price: 279.99, socket: 'amd' },
+                    { id: 'asus-tuf-z690', name: 'ASUS TUF GAMING Z690-PLUS', details: 'Intel Z690, ATX, DDR5, PCIe 5.0', price: 259.99, socket: 'intel' },
+                    { id: 'asus-rog-x670e', name: 'ASUS ROG STRIX X670E-E', details: 'AMD X670E, ATX, DDR5, PCIe 5.0', price: 499.99, socket: 'amd' }
+                ],
+                gigabyte: [
+                    { id: 'gigabyte-b660', name: 'GIGABYTE B660 GAMING X', details: 'Intel B660, ATX, DDR4, PCIe 4.0', price: 149.99, socket: 'intel' },
+                    { id: 'gigabyte-b650', name: 'GIGABYTE B650 AORUS ELITE', details: 'AMD B650, ATX, DDR5, PCIe 5.0', price: 239.99, socket: 'amd' },
+                    { id: 'gigabyte-z690', name: 'GIGABYTE Z690 AORUS PRO', details: 'Intel Z690, ATX, DDR5, PCIe 5.0', price: 329.99, socket: 'intel' },
+                    { id: 'gigabyte-x670e', name: 'GIGABYTE X670E AORUS MASTER', details: 'AMD X670E, ATX, DDR5, PCIe 5.0', price: 479.99, socket: 'amd' }
+                ],
+                msi: [
+                    { id: 'msi-pro-b660', name: 'MSI PRO B660-A', details: 'Intel B660, ATX, DDR4, PCIe 4.0', price: 139.99, socket: 'intel' },
+                    { id: 'msi-mag-b650', name: 'MSI MAG B650 TOMAHAWK', details: 'AMD B650, ATX, DDR5, PCIe 5.0', price: 259.99, socket: 'amd' },
+                    { id: 'msi-mag-z690', name: 'MSI MAG Z690 TOMAHAWK', details: 'Intel Z690, ATX, DDR5, PCIe 5.0', price: 289.99, socket: 'intel' },
+                    { id: 'msi-meg-x670e', name: 'MSI MEG X670E ACE', details: 'AMD X670E, ATX, DDR5, PCIe 5.0', price: 699.99, socket: 'amd' }
+                ],
+                asrock: [
+                    { id: 'asrock-b660', name: 'ASRock B660 Pro RS', details: 'Intel B660, ATX, DDR4, PCIe 4.0', price: 119.99, socket: 'intel' },
+                    { id: 'asrock-b650', name: 'ASRock B650 PG Riptide', details: 'AMD B650, ATX, DDR5, PCIe 5.0', price: 199.99, socket: 'amd' },
+                    { id: 'asrock-z690', name: 'ASRock Z690 Extreme', details: 'Intel Z690, ATX, DDR5, PCIe 5.0', price: 239.99, socket: 'intel' },
+                    { id: 'asrock-x670e', name: 'ASRock X670E Taichi', details: 'AMD X670E, ATX, DDR5, PCIe 5.0', price: 499.99, socket: 'amd' }
+                ]
+            },
+            gpus: {
+                nvidia: [
+                    { id: 'rtx3050', name: 'NVIDIA GeForce RTX 3050', details: '8GB GDDR6, 1777MHz, 128-bit', price: 249.99 },
+                    { id: 'rtx3060', name: 'NVIDIA GeForce RTX 3060', details: '12GB GDDR6, 1777MHz, 192-bit', price: 329.99 },
+                    { id: 'rtx3070', name: 'NVIDIA GeForce RTX 3070', details: '8GB GDDR6, 1725MHz, 256-bit', price: 499.99 },
+                    { id: 'rtx3080', name: 'NVIDIA GeForce RTX 3080', details: '10GB GDDR6X, 1710MHz, 320-bit', price: 699.99 },
+                    { id: 'rtx4070', name: 'NVIDIA GeForce RTX 4070', details: '12GB GDDR6X, 2475MHz, 192-bit', price: 599.99 },
+                    { id: 'rtx4080', name: 'NVIDIA GeForce RTX 4080', details: '16GB GDDR6X, 2505MHz, 256-bit', price: 1199.99 }
+                ],
+                amd: [
+                    { id: 'rx6600', name: 'AMD Radeon RX 6600', details: '8GB GDDR6, 1626MHz, 128-bit', price: 279.99 },
+                    { id: 'rx6700xt', name: 'AMD Radeon RX 6700 XT', details: '12GB GDDR6, 2424MHz, 192-bit', price: 429.99 },
+                    { id: 'rx6800xt', name: 'AMD Radeon RX 6800 XT', details: '16GB GDDR6, 2250MHz, 256-bit', price: 599.99 },
+                    { id: 'rx6900xt', name: 'AMD Radeon RX 6900 XT', details: '16GB GDDR6, 2250MHz, 256-bit', price: 799.99 },
+                    { id: 'rx7800xt', name: 'AMD Radeon RX 7800 XT', details: '16GB GDDR6, 2430MHz, 256-bit', price: 499.99 },
+                    { id: 'rx7900xt', name: 'AMD Radeon RX 7900 XT', details: '20GB GDDR6, 2394MHz, 320-bit', price: 899.99 }
+                ]
+            },
+            storage: {
+                sata_ssd: [
+                    { id: 'sata-256gb', name: '256GB SATA SSD', details: 'Read: 550MB/s, Write: 520MB/s', price: 39.99 },
+                    { id: 'sata-512gb', name: '512GB SATA SSD', details: 'Read: 560MB/s, Write: 530MB/s', price: 59.99 },
+                    { id: 'sata-1tb', name: '1TB SATA SSD', details: 'Read: 560MB/s, Write: 530MB/s', price: 89.99 },
+                    { id: 'sata-2tb', name: '2TB SATA SSD', details: 'Read: 560MB/s, Write: 530MB/s', price: 169.99 }
+                ],
+                nvme_ssd: [
+                    { id: 'nvme-500gb', name: '500GB NVMe SSD', details: 'PCIe Gen4, Read: 5000MB/s, Write: 4000MB/s', price: 69.99 },
+                    { id: 'nvme-1tb', name: '1TB NVMe SSD', details: 'PCIe Gen4, Read: 7000MB/s, Write: 5500MB/s', price: 109.99 },
+                    { id: 'nvme-2tb', name: '2TB NVMe SSD', details: 'PCIe Gen4, Read: 7000MB/s, Write: 6000MB/s', price: 209.99 },
+                    { id: 'nvme-4tb', name: '4TB NVMe SSD', details: 'PCIe Gen4, Read: 7000MB/s, Write: 6000MB/s', price: 399.99 }
+                ],
+                hdd: [
+                    { id: 'hdd-1tb', name: '1TB Hard Drive', details: '7200RPM, SATA 6Gb/s, 64MB Cache', price: 44.99 },
+                    { id: 'hdd-2tb', name: '2TB Hard Drive', details: '7200RPM, SATA 6Gb/s, 64MB Cache', price: 54.99 },
+                    { id: 'hdd-4tb', name: '4TB Hard Drive', details: '7200RPM, SATA 6Gb/s, 128MB Cache', price: 89.99 },
+                    { id: 'hdd-8tb', name: '8TB Hard Drive', details: '7200RPM, SATA 6Gb/s, 256MB Cache', price: 169.99 }
+                ],
+                hybrid: [
+                    { id: 'hybrid-1', name: '500GB NVMe SSD + 2TB HDD', details: 'SSD: PCIe Gen4, HDD: 7200RPM', price: 124.00 },
+                    { id: 'hybrid-2', name: '1TB NVMe SSD + 2TB HDD', details: 'SSD: PCIe Gen4, HDD: 7200RPM', price: 164.00 },
+                    { id: 'hybrid-3', name: '1TB NVMe SSD + 4TB HDD', details: 'SSD: PCIe Gen4, HDD: 7200RPM', price: 199.00 }
+                ]
+            },
+            cases: {
+                full_tower: [
+                    { id: 'corsair-7000d', name: 'Corsair 7000D AIRFLOW', details: 'Full Tower, E-ATX, 4 USB, 10 Fan Mounts', price: 24011.00 },
+                    { id: 'phanteks-enthoo', name: 'Phanteks Enthoo Pro 2', details: 'Full Tower, E-ATX, 4 USB, 12 Fan Mounts', price: 23308.00 },
+                    { id: 'coolermaster-cosmos', name: 'Cooler Master Cosmos C700P', details: 'Full Tower, E-ATX, 6 USB, Tempered Glass', price: 46689.00 }
+                ],
+                mid_tower: [
+                    { id: 'corsair-4000d', name: 'Corsair 4000D AIRFLOW', details: 'Mid Tower, ATX, 2 USB, 6 Fan Mounts', price: 8699.00 },
+                    { id: 'nzxt-h510', name: 'NZXT H510', details: 'Mid Tower, ATX, 2 USB, 4 Fan Mounts', price: 6949.00 },
+                    { id: 'lian-li-o11', name: 'Lian Li O11 Dynamic', details: 'Mid Tower, ATX, 3 USB, 9 Fan Mounts', price: 14386.00 },
+                    { id: 'fractal-meshify', name: 'Fractal Design Meshify C', details: 'Mid Tower, ATX, 2 USB, 7 Fan Mounts', price: 15616.00 }
+                ],
+                mini_tower: [
+                    { id: 'nzxt-h1', name: 'NZXT H1', details: 'Mini Tower, Mini-ITX, 2 USB, Includes PSU', price: 20999.00 },
+                    { id: 'coolermaster-nr200', name: 'Cooler Master NR200', details: 'Mini Tower, Mini-ITX, 2 USB, 7 Fan Mounts', price: 7999.00 },
+                    { id: 'lian-li-q58', name: 'Lian Li Q58', details: 'Mini Tower, Mini-ITX, 1 USB, 4 Fan Mounts', price: 11499.00 }
+                ]
+            }
+        };
+
+        // Optional component prices
+        const optionalComponentPrices = {
+            cpu_cooler: 2499.00,
+            case_fans: 439.99,
+            wifi_card: 1689.99,
+            windows: 0.00
+        };
+
+        let selectedComponents = {
+            cpu: null,
+            motherboard: null,
+            ram: null,
+            storage: [],
+            gpu: null,
+            psu: null,
+            case: null,
+            optionals: []
+        };
+
+        let totalPrice = 0.00; // Assembly fee
+
+        // CPU Brand Selection
+        const cpuBrandSelect = document.getElementById('cpu-brand');
+        const cpuModelSelect = document.getElementById('cpu-model');
+
+        cpuBrandSelect.addEventListener('change', function () {
+            const brand = this.value;
+            populateSelect(cpuModelSelect, componentData.cpus[brand]);
+            cpuModelSelect.disabled = false;
+        });
+
+        // CPU Model Selection
+        cpuModelSelect.addEventListener('change', function () {
+            const cpuId = this.value;
+            const cpuBrand = cpuBrandSelect.value;
+            const cpu = componentData.cpus[cpuBrand].find(c => c.id === cpuId);
+
+            if (cpu) {
+                // Update selection display
+                document.querySelector('#cpu-selection .selected-component-name').textContent = cpu.name;
+                document.querySelector('#cpu-selection .selected-component-details').textContent = cpu.details;
+                document.querySelector('#cpu-selection .selected-component-price').textContent = `₹${cpu.price.toFixed(2)}`; // Change the currency symbol to INR
+                document.getElementById('cpu-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('CPU', cpu.name, true);
+
+                // Update selected components object
+                selectedComponents.cpu = cpu;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Filter compatible motherboards
+                filterCompatibleMotherboards(cpuBrand);
+
+                // Update performance metrics
+                updatePerformanceMetrics();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        });
+
+        // Motherboard Brand Selection
+        const motherboardBrandSelect = document.getElementById('motherboard-brand');
+        const motherboardModelSelect = document.getElementById('motherboard-model');
+
+        motherboardBrandSelect.addEventListener('change', function () {
+            const brand = this.value;
+            // Filter motherboards by CPU socket if CPU is selected
+            if (selectedComponents.cpu) {
+                const cpuBrand = cpuBrandSelect.value;
+                const compatibleMotherboards = componentData.motherboards[brand].filter(m => m.socket === cpuBrand);
+                populateSelect(motherboardModelSelect, compatibleMotherboards);
+            } else {
+                populateSelect(motherboardModelSelect, componentData.motherboards[brand]);
+            }
+            motherboardModelSelect.disabled = false;
+        });
+
+        // Motherboard Model Selection
+        motherboardModelSelect.addEventListener('change', function () {
+            const motherboardId = this.value;
+            const motherboardBrand = motherboardBrandSelect.value;
+            const motherboard = componentData.motherboards[motherboardBrand].find(m => m.id === motherboardId);
+
+            if (motherboard) {
+                // Update selection display
+                document.querySelector('#motherboard-selection .selected-component-name').textContent = motherboard.name;
+                document.querySelector('#motherboard-selection .selected-component-details').textContent = motherboard.details;
+                document.querySelector('#motherboard-selection .selected-component-price').textContent = `₹${motherboard.price.toFixed(2)}`;
+                document.getElementById('motherboard-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('Motherboard', motherboard.name, true);
+
+                // Update selected components object
+                selectedComponents.motherboard = motherboard;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        });
+
+        // RAM Selection
+        const ramCapacitySelect = document.getElementById('ram-capacity');
+        const ramSpeedSelect = document.getElementById('ram-speed');
+
+        function updateRamSelection() {
+            const capacity = ramCapacitySelect.value;
+            const speed = ramSpeedSelect.value;
+
+            if (capacity && speed) {
+                // Create a RAM object
+                const ram = {
+                    id: `${capacity}-${speed}`,
+                    name: `${capacity.toUpperCase()} ${speed.toUpperCase()} RAM`,
+                    details: `Dual Channel, CL16`,
+                    price: calculateRamPrice(capacity, speed)
+                };
+
+                // Update selection display
+                document.querySelector('#ram-selection .selected-component-name').textContent = ram.name;
+                document.querySelector('#ram-selection .selected-component-details').textContent = ram.details;
+                document.querySelector('#ram-selection .selected-component-price').textContent = `₹${ram.price.toFixed(2)}`;
+                document.getElementById('ram-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('RAM', ram.name, true);
+
+                // Update selected components object
+                selectedComponents.ram = ram;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        }
+
+        function calculateRamPrice(capacity, speed) {
+            const basePrice = {
+                '8gb': 49.99,
+                '16gb': 79.99,
+                '32gb': 149.99,
+                '64gb': 299.99
+            };
+
+            const speedMultiplier = {
+                '2666mhz': 1.0,
+                '3000mhz': 1.1,
+                '3200mhz': 1.2,
+                '3600mhz': 1.3,
+                '4000mhz': 1.5
+            };
+
+            return basePrice[capacity] * speedMultiplier[speed];
+        }
+
+        ramCapacitySelect.addEventListener('change', updateRamSelection);
+        ramSpeedSelect.addEventListener('change', updateRamSelection);
+
+        // Storage Selection
+        const storageTypeSelect = document.getElementById('storage-type');
+        const storageCapacitySelect = document.getElementById('storage-capacity');
+
+        storageTypeSelect.addEventListener('change', function () {
+            const type = this.value;
+            populateSelect(storageCapacitySelect, componentData.storage[type]);
+            storageCapacitySelect.disabled = false;
+        });
+
+        storageCapacitySelect.addEventListener('change', function () {
+            const storageId = this.value;
+            const storageType = storageTypeSelect.value;
+            const storage = componentData.storage[storageType].find(s => s.id === storageId);
+
+            if (storage) {
+                // Update selection display
+                document.querySelector('#storage-selection .selected-component-name').textContent = storage.name;
+                document.querySelector('#storage-selection .selected-component-details').textContent = storage.details;
+                document.querySelector('#storage-selection .selected-component-price').textContent = `₹${storage.price.toFixed(2)}`;
+                document.getElementById('storage-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('Storage', storage.name, true);
+
+                // Update selected components object
+                selectedComponents.storage = [storage]; // Reset to only the selected storage
+
+                // Update total price
+                updateTotalPrice();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        });
+
+        // GPU Selection
+        const gpuBrandSelect = document.getElementById('gpu-brand');
+        const gpuModelSelect = document.getElementById('gpu-model');
+
+        gpuBrandSelect.addEventListener('change', function () {
+            const brand = this.value;
+            populateSelect(gpuModelSelect, componentData.gpus[brand]);
+            gpuModelSelect.disabled = false;
+        });
+
+        gpuModelSelect.addEventListener('change', function () {
+            const gpuId = this.value;
+            const gpuBrand = gpuBrandSelect.value;
+            const gpu = componentData.gpus[gpuBrand].find(g => g.id === gpuId);
+
+            if (gpu) {
+                // Update selection display
+                document.querySelector('#gpu-selection .selected-component-name').textContent = gpu.name;
+                document.querySelector('#gpu-selection .selected-component-details').textContent = gpu.details;
+                document.querySelector('#gpu-selection .selected-component-price').textContent = `₹${gpu.price.toFixed(2)}`;
+                document.getElementById('gpu-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('Graphics Card', gpu.name, true);
+
+                // Update selected components object
+                selectedComponents.gpu = gpu;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Update performance metrics
+                updatePerformanceMetrics();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        });
+
+        // PSU Selection
+        const psuWattageSelect = document.getElementById('psu-wattage');
+        const psuCertificationSelect = document.getElementById('psu-certification');
+
+        function updatePsuSelection() {
+            const wattage = psuWattageSelect.value;
+            const certification = psuCertificationSelect.value;
+
+            if (wattage && certification) {
+                // Create a PSU object
+                const psu = {
+                    id: `${wattage}-${certification}`,
+                    name: `${wattage.toUpperCase()} ${certification.replace('_', ' ').toUpperCase()} Power Supply`,
+                    details: `Modular, 120mm Fan`,
+                    price: calculatePsuPrice(wattage, certification)
+                };
+
+                // Update selection display
+                document.querySelector('#psu-selection .selected-component-name').textContent = psu.name;
+                document.querySelector('#psu-selection .selected-component-details').textContent = psu.details;
+                document.querySelector('#psu-selection .selected-component-price').textContent = `₹${psu.price.toFixed(2)}`;
+                document.getElementById('psu-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('Power Supply', psu.name, true);
+
+                // Update selected components object
+                selectedComponents.psu = psu;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        }
+
+        function calculatePsuPrice(wattage, certification) {
+            const basePrice = {
+                '500w': 59.99,
+                '650w': 79.99,
+                '750w': 99.99,
+                '850w': 129.99,
+                '1000w': 179.99
+            };
+
+            const certMultiplier = {
+                '80plus': 1.0,
+                '80plus_bronze': 1.1,
+                '80plus_silver': 1.2,
+                '80plus_gold': 1.3,
+                '80plus_platinum': 1.5
+            };
+
+            return basePrice[wattage] * certMultiplier[certification];
+        }
+
+        psuWattageSelect.addEventListener('change', updatePsuSelection);
+        psuCertificationSelect.addEventListener('change', updatePsuSelection);
+
+        // Case Selection
+        const caseSizeSelect = document.getElementById('case-size');
+        const caseModelSelect = document.getElementById('case-model');
+
+        caseSizeSelect.addEventListener('change', function () {
+            const size = this.value;
+            populateSelect(caseModelSelect, componentData.cases[size]);
+            caseModelSelect.disabled = false;
+        });
+
+        caseModelSelect.addEventListener('change', function () {
+            const caseId = this.value;
+            const caseSize = caseSizeSelect.value;
+            const pcCase = componentData.cases[caseSize].find(c => c.id === caseId);
+
+            if (pcCase) {
+                // Update selection display
+                document.querySelector('#case-selection .selected-component-name').textContent = pcCase.name;
+                document.querySelector('#case-selection .selected-component-details').textContent = pcCase.details;
+                document.querySelector('#case-selection .selected-component-price').textContent = `₹${pcCase.price.toFixed(2)}`;
+                document.getElementById('case-selection').classList.remove('d-none');
+
+                // Update the summary
+                updateComponentStatus('PC Case', pcCase.name, true);
+
+                // Update selected components object
+                selectedComponents.case = pcCase;
+
+                // Update total price
+                updateTotalPrice();
+
+                // Check if all required components are selected
+                checkRequiredComponents();
+            }
+        });
+
+        // Optional Components
+        const optionalCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]');
+
+        optionalCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                updateOptionalComponents();
+                updateTotalPrice();
+            });
+        });
+
+        function updateOptionalComponents() {
+            selectedComponents.optionals = [];
+
+            if (document.getElementById('add-cpu-cooler').checked) {
+                selectedComponents.optionals.push({
+                    id: 'cpu_cooler',
+                    name: 'CPU Cooler',
+                    price: optionalComponentPrices.cpu_cooler
+                });
+            }
+
+            if (document.getElementById('add-case-fans').checked) {
+                selectedComponents.optionals.push({
+                    id: 'case_fans',
+                    name: 'Extra Case Fans',
+                    price: optionalComponentPrices.case_fans
+                });
+            }
+
+            if (document.getElementById('add-wifi').checked) {
+                selectedComponents.optionals.push({
+                    id: 'wifi_card',
+                    name: 'Wi-Fi Card',
+                    price: optionalComponentPrices.wifi_card
+                });
+            }
+
+            if (document.getElementById('add-windows').checked) {
+                selectedComponents.optionals.push({
+                    id: 'windows',
+                    name: 'Windows OS',
+                    price: optionalComponentPrices.windows
+                });
+            }
+        }
+
+        // Remove Selection Buttons
+        const removeSelectionButtons = document.querySelectorAll('.remove-selection');
+
+        removeSelectionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const component = this.getAttribute('data-component');
+                resetComponentSelection(component);
+            });
+        });
+
+        function resetComponentSelection(component) {
+            // Hide selection display
+            document.getElementById(`${component}-selection`).classList.add('d-none');
+
+            // Reset the corresponding select elements
+            switch (component) {
+                case 'cpu':
+                    document.getElementById('cpu-model').disabled = true;
+                    document.getElementById('cpu-model').selectedIndex = 0;
+                    selectedComponents.cpu = null;
+                    updateComponentStatus('CPU', 'Not Selected', false);
+                    break;
+                case 'motherboard':
+                    document.getElementById('motherboard-model').disabled = true;
+                    document.getElementById('motherboard-model').selectedIndex = 0;
+                    selectedComponents.motherboard = null;
+                    updateComponentStatus('Motherboard', 'Not Selected', false);
+                    break;
+                case 'ram':
+                    document.getElementById('ram-capacity').selectedIndex = 0;
+                    document.getElementById('ram-speed').selectedIndex = 0;
+                    selectedComponents.ram = null;
+                    updateComponentStatus('RAM', 'Not Selected', false);
+                    break;
+                case 'storage':
+                    document.getElementById('storage-capacity').disabled = true;
+                    document.getElementById('storage-capacity').selectedIndex = 0;
+                    selectedComponents.storage = [];
+                    updateComponentStatus('Storage', 'Not Selected', false);
+                    break;
+                case 'gpu':
+                    document.getElementById('gpu-model').disabled = true;
+                    document.getElementById('gpu-model').selectedIndex = 0;
+                    selectedComponents.gpu = null;
+                    updateComponentStatus('Graphics Card', 'Not Selected', false);
+                    break;
+                case 'psu':
+                    document.getElementById('psu-wattage').selectedIndex = 0;
+                    document.getElementById('psu-certification').selectedIndex = 0;
+                    selectedComponents.psu = null;
+                    updateComponentStatus('Power Supply', 'Not Selected', false);
+                    break;
+                case 'case':
+                    document.getElementById('case-model').disabled = true;
+                    document.getElementById('case-model').selectedIndex = 0;
+                    selectedComponents.case = null;
+                    updateComponentStatus('PC Case', 'Not Selected', false);
+                    break;
+            }
+
+            // Update total price
+            updateTotalPrice();
+
+            // Update performance metrics
+            updatePerformanceMetrics();
+
+            // Check if all required components are selected
+            checkRequiredComponents();
+        }
+
+        // Reset Form Button
+        document.getElementById('reset-form').addEventListener('click', function () {
+            resetAllSelections();
+        });
+
+        function resetAllSelections() {
+            // Reset all dropdowns
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.selectedIndex = 0;
+                if (select.id.includes('model') || select.id.includes('capacity')) {
+                    select.disabled = true;
+                }
+            });
+
+            // Reset all checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            // Hide all selection displays
+            const selectionDisplays = document.querySelectorAll('.selected-component');
+            selectionDisplays.forEach(display => {
+                display.classList.add('d-none');
+            });
+
+            // Reset selected components
+            selectedComponents = {
+                cpu: null,
+                motherboard: null,
+                ram: null,
+                storage: [],
+                gpu: null,
+                psu: null,
+                case: null,
+                optionals: []
+            };
+
+            // Update component status in summary
+            updateComponentStatus('CPU', 'Not Selected', false);
+            updateComponentStatus('Motherboard', 'Not Selected', false);
+            updateComponentStatus('RAM', 'Not Selected', false);
+            updateComponentStatus('Storage', 'Not Selected', false);
+            updateComponentStatus('Graphics Card', 'Not Selected', false);
+            updateComponentStatus('Power Supply', 'Not Selected', false);
+            updateComponentStatus('PC Case', 'Not Selected', false);
+
+            // Update total price
+            updateTotalPrice();
+
+            // Hide performance metrics
+            document.getElementById('performance-metrics').classList.add('d-none');
+            document.getElementById('performance-placeholder').classList.remove('d-none');
+
+            // Disable Add to Cart button
+            document.getElementById('add-to-cart-button').disabled = true;
+        }
+
+        // Helper Functions
+        function populateSelect(selectElement, options) {
+            // Clear existing options
+            selectElement.innerHTML = '<option value="" selected disabled>-- Select an option --</option>';
+
+            // Add new options
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.id;
+                optionElement.textContent = option.name;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        function updateComponentStatus(componentName, value, selected, customClass = null) {
+            // Find the list item for this component
+            const listItems = document.querySelectorAll('.component-list li');
+            let listItem;
+
+            for (let item of listItems) {
+                if (item.textContent.includes(componentName)) {
+                    listItem = item;
+                    break;
+                }
+            }
+
+            if (listItem) {
+                const statusElement = listItem.querySelector('.component-status');
+                statusElement.textContent = value;
+
+                // Remove all status classes first
+                statusElement.classList.remove('text-success', 'text-muted', 'text-info', 'text-warning', 'text-danger');
+
+                // Add the appropriate class based on parameters
+                if (customClass) {
+                    statusElement.classList.add(customClass);
+                } else if (selected) {
+                    statusElement.classList.add('text-success');
+                } else {
+                    statusElement.classList.add('text-muted');
+                }
+            }
+        }
+
+        function updateTotalPrice() {
+            let baseComponentsPrice = 0;
+            let addonsPrice = 0;
+
+            // Add prices of selected components
+            if (selectedComponents.cpu) baseComponentsPrice += selectedComponents.cpu.price;
+            if (selectedComponents.motherboard) baseComponentsPrice += selectedComponents.motherboard.price;
+            if (selectedComponents.ram) baseComponentsPrice += selectedComponents.ram.price;
+
+            selectedComponents.storage.forEach(storage => {
+                baseComponentsPrice += storage.price;
+            });
+
+            if (selectedComponents.gpu) baseComponentsPrice += selectedComponents.gpu.price;
+            if (selectedComponents.psu) baseComponentsPrice += selectedComponents.psu.price;
+            if (selectedComponents.case) baseComponentsPrice += selectedComponents.case.price;
+
+            // Add prices of optional components
+            selectedComponents.optionals.forEach(optional => {
+                addonsPrice += optional.price;
+            });
+
+            // Update the UI
+            document.querySelector('.base-components-price').textContent = `₹${baseComponentsPrice.toFixed(2)}`;
+            document.querySelector('.addons-price').textContent = `₹${addonsPrice.toFixed(2)}`;
+
+            // Assembly fee is fixed at ₹49.99
+            const assemblyFee = 0.00;
+
+            // Calculate total
+            totalPrice = baseComponentsPrice + addonsPrice + assemblyFee;
+            document.querySelector('.total-price').textContent = `₹${totalPrice.toFixed(2)}`;
+
+            // Update the hidden input value for form submission
+            document.getElementById('total-price-input').value = totalPrice.toFixed(2);
+        }
+
+        function filterCompatibleMotherboards(cpuBrand) {
+            // If motherboard brand is selected, filter the models by CPU socket
+            const motherboardBrand = document.getElementById('motherboard-brand').value;
+            if (motherboardBrand) {
+                const compatibleMotherboards = componentData.motherboards[motherboardBrand].filter(m => m.socket === cpuBrand);
+                populateSelect(document.getElementById('motherboard-model'), compatibleMotherboards);
+            }
+        }
+
+        function updatePerformanceMetrics() {
+            // Only show performance metrics if both CPU and GPU are selected
+            if (selectedComponents.cpu && selectedComponents.gpu) {
+                document.getElementById('performance-metrics').classList.remove('d-none');
+                document.getElementById('performance-placeholder').classList.add('d-none');
+
+                // Calculate performance scores
+                let gamingScore = calculateGamingScore();
+                let productivityScore = calculateProductivityScore();
+                let contentScore = calculateContentScore();
+
+                // Update progress bars
+                document.getElementById('gaming-progress').style.width = `${gamingScore}%`;
+                document.getElementById('productivity-progress').style.width = `${productivityScore}%`;
+                document.getElementById('content-progress').style.width = `${contentScore}%`;
+
+                // Update ratings
+                document.getElementById('gaming-rating').textContent = getRatingLabel(gamingScore);
+                document.getElementById('productivity-rating').textContent = getRatingLabel(productivityScore);
+                document.getElementById('content-rating').textContent = getRatingLabel(contentScore);
+
+                // Update estimated FPS
+                updateEstimatedFps();
+            } else {
+                document.getElementById('performance-metrics').classList.add('d-none');
+                document.getElementById('performance-placeholder').classList.remove('d-none');
+            }
+        }
+
+        function calculateGamingScore() {
+            if (!selectedComponents.cpu || !selectedComponents.gpu) return 0;
+
+            // CPU and GPU contribute most to gaming performance
+            let cpuScore = getCpuScore(selectedComponents.cpu.id) * 0.4;
+            let gpuScore = getGpuScore(selectedComponents.gpu.id) * 0.6;
+
+            // RAM and storage have smaller impacts
+            let ramScore = 0;
+            if (selectedComponents.ram) {
+                const capacity = selectedComponents.ram.id.split('-')[0];
+                const speed = selectedComponents.ram.id.split('-')[1];
+                ramScore = (capacity === '8gb' ? 70 : capacity === '16gb' ? 85 : capacity === '32gb' ? 95 : 100) *
+                    (speed === '2666mhz' ? 0.85 : speed === '3000mhz' ? 0.9 : speed === '3200mhz' ? 0.95 : speed === '3600mhz' ? 1.0 : 1.05);
+            }
+
+            let storageScore = 0;
+            if (selectedComponents.storage.length > 0) {
+                const type = selectedComponents.storage[0].id.split('-')[0];
+                storageScore = type.includes('nvme') ? 95 : type.includes('sata') ? 85 : 75;
+            }
+
+            // Combine all scores (CPU and GPU have bigger weights)
+            let totalScore = cpuScore + gpuScore;
+            if (ramScore > 0) totalScore = totalScore * 0.9 + (ramScore * 0.1);
+            if (storageScore > 0) totalScore = totalScore * 0.95 + (storageScore * 0.05);
+
+            return Math.min(Math.round(totalScore), 100);
+        }
+
+        function calculateProductivityScore() {
+            if (!selectedComponents.cpu) return 0;
+
+            // CPU contributes most to productivity
+            let cpuScore = getCpuScore(selectedComponents.cpu.id) * 0.6;
+
+            // RAM, storage, and GPU also impact productivity
+            let gpuScore = 0;
+            if (selectedComponents.gpu) {
+                gpuScore = getGpuScore(selectedComponents.gpu.id) * 0.2;
+            }
+
+            let ramScore = 0;
+            if (selectedComponents.ram) {
+                const capacity = selectedComponents.ram.id.split('-')[0];
+                ramScore = (capacity === '8gb' ? 60 : capacity === '16gb' ? 80 : capacity === '32gb' ? 95 : 100) * 0.15;
+            }
+
+            let storageScore = 0;
+            if (selectedComponents.storage.length > 0) {
+                const type = selectedComponents.storage[0].id.split('-')[0];
+                storageScore = type.includes('nvme') ? 95 : type.includes('sata') ? 80 : 65;
+                storageScore *= 0.05;
+            }
+
+            // Combine all scores
+            let totalScore = cpuScore + gpuScore + ramScore + storageScore;
+
+            return Math.min(Math.round(totalScore), 100);
+        }
+
+        function calculateContentScore() {
+            if (!selectedComponents.cpu || !selectedComponents.gpu) return 0;
+
+            // CPU and GPU contribute equally to content creation
+            let cpuScore = getCpuScore(selectedComponents.cpu.id) * 0.45;
+            let gpuScore = getGpuScore(selectedComponents.gpu.id) * 0.35;
+
+            // RAM is very important for content creation
+            let ramScore = 0;
+            if (selectedComponents.ram) {
+                const capacity = selectedComponents.ram.id.split('-')[0];
+                ramScore = (capacity === '8gb' ? 50 : capacity === '16gb' ? 75 : capacity === '32gb' ? 90 : 100) * 0.15;
+            }
+
+            // Storage affects performance too
+            let storageScore = 0;
+            if (selectedComponents.storage.length > 0) {
+                const type = selectedComponents.storage[0].id.split('-')[0];
+                storageScore = type.includes('nvme') ? 95 : type.includes('sata') ? 75 : 60;
+                storageScore *= 0.05;
+            }
+
+            // Combine all scores
+            let totalScore = cpuScore + gpuScore + ramScore + storageScore;
+
+            return Math.min(Math.round(totalScore), 100);
+        }
+
+        function getCpuScore(cpuId) {
+            // CPU performance scores (0-100)
+            const cpuScores = {
+                // Intel
+                'i3-12100f': 65,
+                'i5-12400f': 78,
+                'i5-13600k': 88,
+                'i7-13700k': 94,
+                'i9-13900k': 100,
+                // AMD
+                'r5-5600': 75,
+                'r5-7600x': 85,
+                'r7-5800x': 87,
+                'r7-7700x': 92,
+                'r9-7950x': 99
+            };
+
+            return cpuScores[cpuId] || 50;
+        }
+
+        function getGpuScore(gpuId) {
+            // GPU performance scores (0-100)
+            const gpuScores = {
+                // NVIDIA
+                'rtx3050': 60,
+                'rtx3060': 70,
+                'rtx3070': 80,
+                'rtx3080': 90,
+                'rtx4070': 85,
+                'rtx4080': 95,
+                // AMD
+                'rx6600': 65,
+                'rx6700xt': 75,
+                'rx6800xt': 85,
+                'rx6900xt': 90,
+                'rx7800xt': 87,
+                'rx7900xt': 93
+            };
+
+            return gpuScores[gpuId] || 50;
+        }
+
+        function getRatingLabel(score) {
+            if (score >= 90) return 'Excellent';
+            if (score >= 80) return 'Very Good';
+            if (score >= 70) return 'Good';
+            if (score >= 60) return 'Decent';
+            if (score >= 40) return 'Fair';
+            return 'Poor';
+        }
+
+        function updateEstimatedFps() {
+            if (!selectedComponents.cpu || !selectedComponents.gpu) return;
+
+            const cpuId = selectedComponents.cpu.id;
+            const gpuId = selectedComponents.gpu.id;
+
+            // Base FPS values for each GPU (for a mid-range CPU)
+            const baseFpsValues = {
+                // NVIDIA
+                'rtx3050': { fortnite: 120, cod: 80, cyberpunk: 45 },
+                'rtx3060': { fortnite: 170, cod: 110, cyberpunk: 60 },
+                'rtx3070': { fortnite: 220, cod: 140, cyberpunk: 80 },
+                'rtx3080': { fortnite: 280, cod: 160, cyberpunk: 95 },
+                'rtx4070': { fortnite: 250, cod: 150, cyberpunk: 90 },
+                'rtx4080': { fortnite: 300, cod: 180, cyberpunk: 110 },
+                // AMD
+                'rx6600': { fortnite: 140, cod: 90, cyberpunk: 50 },
+                'rx6700xt': { fortnite: 190, cod: 120, cyberpunk: 65 },
+                'rx6800xt': { fortnite: 240, cod: 150, cyberpunk: 85 },
+                'rx6900xt': { fortnite: 280, cod: 170, cyberpunk: 95 },
+                'rx7800xt': { fortnite: 260, cod: 160, cyberpunk: 90 },
+                'rx7900xt': { fortnite: 300, cod: 180, cyberpunk: 100 }
+            };
+
+            // CPU scaling factors (relative to mid-range)
+            const cpuScalingFactors = {
+                // Intel
+                'i3-12100f': 0.85,
+                'i5-12400f': 0.95,
+                'i5-13600k': 1.05,
+                'i7-13700k': 1.10,
+                'i9-13900k': 1.15,
+                // AMD
+                'r5-5600': 0.90,
+                'r5-7600x': 1.00,
+                'r7-5800x': 1.02,
+                'r7-7700x': 1.08,
+                'r9-7950x': 1.12
+            };
+
+            // Apply scaling factors
+            const scalingFactor = cpuScalingFactors[cpuId] || 1.0;
+            const baseFps = baseFpsValues[gpuId] || { fortnite: 100, cod: 70, cyberpunk: 40 };
+
+            document.getElementById('fps-fortnite').textContent = Math.round(baseFps.fortnite * scalingFactor) + ' FPS';
+            document.getElementById('fps-cod').textContent = Math.round(baseFps.cod * scalingFactor) + ' FPS';
+            document.getElementById('fps-cyberpunk').textContent = Math.round(baseFps.cyberpunk * scalingFactor) + ' FPS';
+        }
+
+        function checkRequiredComponents() {
+            // Define base required components
+            let requiredComponents = ['cpu', 'motherboard', 'ram', 'psu', 'case'];
+
+            // Check if the selected CPU is an APU (has integrated graphics)
+            const hasAPU = selectedComponents.cpu && selectedComponents.cpu.isAPU;
+
+            // If CPU is not an APU, then GPU is required
+            if (!hasAPU) {
+                requiredComponents.push('gpu');
+            }
+
+            // Storage is required
+            const storageRequired = selectedComponents.storage.length > 0;
+
+            // Check if all required components are selected
+            const allRequiredSelected = requiredComponents.every(component =>
+                selectedComponents[component] !== null) && storageRequired;
+
+            // Update the GPU requirement information in the UI
+            if (hasAPU) {
+                // If using an APU, show a message that GPU is optional
+                updateComponentStatus('Graphics Card', 'Optional (Using CPU integrated graphics)', false, 'text-info');
+            } else {
+                // If not using an APU, show "Not Selected" for the GPU if none is chosen
+                if (!selectedComponents.gpu) {
+                    updateComponentStatus('Graphics Card', 'Not Selected', false);
+                }
+            }
+
+            // Enable/disable the "Add to Cart" button
+            document.getElementById('add-to-cart-button').disabled = !allRequiredSelected;
+
+            // Check compatibility
+            checkCompatibility();
+        }
+
+        function checkCompatibility() {
+            const compatibilityIssuesElement = document.getElementById('compatibility-issues');
+            const issues = [];
+
+            // Check if both CPU and motherboard are selected
+            if (selectedComponents.cpu && selectedComponents.motherboard) {
+                const cpuBrand = document.getElementById('cpu-brand').value;
+                const motherboardBrand = document.getElementById('motherboard-brand').value;
+                const motherboard = selectedComponents.motherboard;
+
+                // Check socket compatibility
+                if (motherboard.socket !== cpuBrand) {
+                    issues.push(`<li class="text-danger">CPU socket incompatible with motherboard</li>`);
+                }
+            }
+
+            // Check if case and motherboard are compatible
+            if (selectedComponents.case && selectedComponents.motherboard) {
+                const caseSize = document.getElementById('case-size').value;
+
+                // Simple check - full tower can fit any motherboard, mid tower can fit ATX and smaller, mini tower can only fit mini-ITX
+                if (caseSize === 'mini_tower' && !selectedComponents.motherboard.details.includes('Mini-ITX')) {
+                    issues.push(`<li class="text-danger">Motherboard size incompatible with case</li>`);
+                }
+            }
+
+            // Check if PSU is sufficient for components
+            if (selectedComponents.psu && selectedComponents.gpu && selectedComponents.cpu) {
+                const psuWattage = parseInt(selectedComponents.psu.name.split(' ')[0]);
+
+                // Estimate power requirement
+                let powerRequirement = 0;
+
+                // CPU power estimates
+                if (selectedComponents.cpu.id.includes('i9') || selectedComponents.cpu.id.includes('r9')) {
+                    powerRequirement += 150;
+                } else if (selectedComponents.cpu.id.includes('i7') || selectedComponents.cpu.id.includes('r7')) {
+                    powerRequirement += 125;
+                } else if (selectedComponents.cpu.id.includes('i5') || selectedComponents.cpu.id.includes('r5')) {
+                    powerRequirement += 100;
+                } else {
+                    powerRequirement += 75;
+                }
+
+                // GPU power estimates
+                if (selectedComponents.gpu.id.includes('4080') || selectedComponents.gpu.id.includes('7900')) {
+                    powerRequirement += 320;
+                } else if (selectedComponents.gpu.id.includes('3080') || selectedComponents.gpu.id.includes('6900')) {
+                    powerRequirement += 300;
+                } else if (selectedComponents.gpu.id.includes('3070') || selectedComponents.gpu.id.includes('6800')) {
+                    powerRequirement += 220;
+                } else if (selectedComponents.gpu.id.includes('3060') || selectedComponents.gpu.id.includes('6700')) {
+                    powerRequirement += 170;
+                } else {
+                    powerRequirement += 130;
+                }
+
+                // Add base system power
+                powerRequirement += 100;
+
+                // Check if PSU is sufficient
+                if (psuWattage < powerRequirement) {
+                    issues.push(`<li class="text-danger">Power supply (${psuWattage}W) insufficient for components (est. ${powerRequirement}W)</li>`);
+                } else if (psuWattage < powerRequirement * 1.2) {
+                    issues.push(`<li class="text-warning">Power supply (${psuWattage}W) is barely sufficient. Consider a higher wattage PSU.</li>`);
+                }
+            }
+
+            // Update the compatibility issues section
+            if (issues.length > 0) {
+                compatibilityIssuesElement.innerHTML = `
+                    <ul class="mb-0">
+                        ${issues.join('')}
                     </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Component Selection Modals -->
-<!-- CPU Modal -->
-<div class="modal fade" id="cpu-modal" tabindex="-1" aria-labelledby="cpuModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cpuModalLabel">Select CPU</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for cpu in components.cpu %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ cpu.name }}" data-price="{{ cpu.price }}" data-specs="{{ cpu.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ cpu.name }}</h5>
-                                    <p class="card-text">{{ cpu.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Socket:</strong> {{ cpu.specs.socket }}</small></li>
-                                        <li><small><strong>Cores/Threads:</strong> {{ cpu.specs.cores }}/{{ cpu.specs.threads }}</small></li>
-                                        <li><small><strong>Clock Speed:</strong> {{ cpu.specs.base_clock }} - {{ cpu.specs.boost_clock }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(cpu.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="cpu" data-component-id="{{ cpu.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Motherboard Modal -->
-<div class="modal fade" id="motherboard-modal" tabindex="-1" aria-labelledby="motherboardModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="motherboardModalLabel">Select Motherboard</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for mb in components.motherboard %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ mb.name }}" data-price="{{ mb.price }}" data-specs="{{ mb.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ mb.name }}</h5>
-                                    <p class="card-text">{{ mb.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Socket:</strong> {{ mb.specs.socket }}</small></li>
-                                        <li><small><strong>Chipset:</strong> {{ mb.specs.chipset }}</small></li>
-                                        <li><small><strong>Memory:</strong> {{ mb.specs.memory_type }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(mb.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="motherboard" data-component-id="{{ mb.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- GPU Modal -->
-<div class="modal fade" id="gpu-modal" tabindex="-1" aria-labelledby="gpuModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="gpuModalLabel">Select GPU</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for gpu in components.gpu %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ gpu.name }}" data-price="{{ gpu.price }}" data-specs="{{ gpu.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ gpu.name }}</h5>
-                                    <p class="card-text">{{ gpu.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Memory:</strong> {{ gpu.specs.memory }}</small></li>
-                                        <li><small><strong>Clock Speed:</strong> {{ gpu.specs.boost_clock }}</small></li>
-                                        <li><small><strong>Power:</strong> {{ gpu.specs.power }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(gpu.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="gpu" data-component-id="{{ gpu.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- RAM Modal -->
-<div class="modal fade" id="ram-modal" tabindex="-1" aria-labelledby="ramModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ramModalLabel">Select RAM</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for ram in components.ram %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ ram.name }}" data-price="{{ ram.price }}" data-specs="{{ ram.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ ram.name }}</h5>
-                                    <p class="card-text">{{ ram.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Capacity:</strong> {{ ram.specs.capacity }}</small></li>
-                                        <li><small><strong>Type:</strong> {{ ram.specs.type }}</small></li>
-                                        <li><small><strong>Speed:</strong> {{ ram.specs.speed }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(ram.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="ram" data-component-id="{{ ram.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Storage Modal -->
-<div class="modal fade" id="storage-modal" tabindex="-1" aria-labelledby="storageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="storageModalLabel">Select Storage</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for storage in components.storage %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ storage.name }}" data-price="{{ storage.price }}" data-specs="{{ storage.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ storage.name }}</h5>
-                                    <p class="card-text">{{ storage.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Capacity:</strong> {{ storage.specs.capacity }}</small></li>
-                                        <li><small><strong>Type:</strong> {{ storage.specs.type }}</small></li>
-                                        {% if storage.specs.read_speed %}
-                                        <li><small><strong>Read Speed:</strong> {{ storage.specs.read_speed }}</small></li>
-                                        {% endif %}
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(storage.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="storage" data-component-id="{{ storage.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- PSU Modal -->
-<div class="modal fade" id="psu-modal" tabindex="-1" aria-labelledby="psuModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="psuModalLabel">Select Power Supply</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for psu in components.psu %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ psu.name }}" data-price="{{ psu.price }}" data-specs="{{ psu.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ psu.name }}</h5>
-                                    <p class="card-text">{{ psu.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Wattage:</strong> {{ psu.specs.wattage }}</small></li>
-                                        <li><small><strong>Rating:</strong> {{ psu.specs.rating }}</small></li>
-                                        <li><small><strong>Modularity:</strong> {{ psu.specs.modularity }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(psu.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="psu" data-component-id="{{ psu.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Case Modal -->
-<div class="modal fade" id="case-modal" tabindex="-1" aria-labelledby="caseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="caseModalLabel">Select Case</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for case in components.case %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ case.name }}" data-price="{{ case.price }}" data-specs="{{ case.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ case.name }}</h5>
-                                    <p class="card-text">{{ case.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Form Factor:</strong> {{ case.specs.form_factor }}</small></li>
-                                        <li><small><strong>Color:</strong> {{ case.specs.color }}</small></li>
-                                        <li><small><strong>RGB:</strong> {{ case.specs.rgb }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(case.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="case" data-component-id="{{ case.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Cooling Modal -->
-<div class="modal fade" id="cooling-modal" tabindex="-1" aria-labelledby="coolingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="coolingModalLabel">Select CPU Cooling</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="component-picker">
-                    <div class="row g-3">
-                        {% for cooling in components.cooling %}
-                        <div class="col-md-6">
-                            <div class="card component-card h-100" data-name="{{ cooling.name }}" data-price="{{ cooling.price }}" data-specs="{{ cooling.specs|tojson }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ cooling.name }}</h5>
-                                    <p class="card-text">{{ cooling.description }}</p>
-                                    <ul class="list-unstyled">
-                                        <li><small><strong>Type:</strong> {{ cooling.specs.type }}</small></li>
-                                        <li><small><strong>TDP:</strong> {{ cooling.specs.tdp }}</small></li>
-                                        <li><small><strong>RGB:</strong> {{ cooling.specs.rgb }}</small></li>
-                                    </ul>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h5 mb-0">₹{{ "%.2f"|format(cooling.price) }}</span>
-                                        <button type="button" class="btn btn-sm btn-primary component-select-btn" data-category="cooling" data-component-id="{{ cooling.id }}">Select</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/pc_builder.js') }}"></script>
+                `;
+            } else if (selectedComponents.cpu && selectedComponents.motherboard && selectedComponents.gpu && selectedComponents.psu) {
+                compatibilityIssuesElement.innerHTML = `
+                    <p class="text-success mb-0"><i class="fas fa-check-circle me-2"></i> All selected components appear to be compatible.</p>
+                `;
+            } else {
+                compatibilityIssuesElement.innerHTML = `
+                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-2"></i> Select components to check compatibility.</p>
+                `;
+            }
+        }
+    });
+</script>
 {% endblock %}
