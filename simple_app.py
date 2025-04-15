@@ -3,6 +3,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import pytz
+from datetime import datetime
+
+# Replace ZoneInfo with pytz
+datetime.now(pytz.timezone('Asia/Kolkata'))
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import pytz
@@ -107,16 +113,15 @@ with app.app_context():
         demo_user = User(username="demo", email="demo@example.com")
         demo_user.set_password("password")
         db.session.add(demo_user)
-    
     # Create some products
     products = [
         # Intel Gaming PCs
         Product(
                 name="Intel Gaming PC - Ultimate Edition",
-                price=1299.99,
+                price=114999.99,
                 category="prebuilt",
                 description="High-performance gaming PC with Intel Core i7 processor",
-                image_url="https://via.placeholder.com/300x200?text=Intel+Gaming+PC",
+                image_url="https://cdn.mos.cms.futurecdn.net/kj3ZbACtQnnhFTB6nCMFUC-970-80.jpg.webp",
                 specs={
                     "cpu": "Intel Core i7-12700K",
                     "ram": "32GB DDR4 3200MHz",
@@ -126,10 +131,10 @@ with app.app_context():
             ),
             Product(
                 name="Intel Pro Gaming Rig",
-                price=1799.99,
+                price=154999.99,
                 category="prebuilt",
                 description="Professional-grade gaming PC with top-tier Intel CPU",
-                image_url="https://via.placeholder.com/300x200?text=Intel+Pro+Gaming",
+                image_url="https://intelcorp.scene7.com/is/image/intelcorp/30s-vid-intel-pro-rpl-14thg-gameplay-ag-na-hqprim-na-us-eng-16x9-video-thumbnail:1920-1080?wid=1920&hei=1080",
                 specs={
                     "cpu": "Intel Core i9-12900K",
                     "ram": "64GB DDR5 4800MHz",
@@ -139,10 +144,10 @@ with app.app_context():
             ),
             Product(
                 name="Intel Budget Gamer",
-                price=899.99,
+                price=59999.99,
                 category="prebuilt",
                 description="Affordable gaming PC with Intel Core i5 processor",
-                image_url="https://via.placeholder.com/300x200?text=Intel+Budget+PC",
+                image_url="https://m.media-amazon.com/images/I/71-ZJ3Fs+QL._AC_SL1500_.jpg",
                 specs={
                     "cpu": "Intel Core i5-12400F",
                     "ram": "16GB DDR4 3000MHz",
@@ -154,10 +159,10 @@ with app.app_context():
             # AMD Gaming PCs
             Product(
                 name="AMD Gaming PC - Pro Series",
-                price=1199.99,
+                price=102999.99,
                 category="prebuilt",
                 description="High-performance gaming PC with AMD Ryzen processor",
-                image_url="https://via.placeholder.com/300x200?text=AMD+Gaming+PC",
+                image_url="https://www.amd.com/content/dam/amd/en/images/products/desktops/1678052-forspoken-ryzen-radeon-desktop.png",
                 specs={
                     "cpu": "AMD Ryzen 7 5800X",
                     "ram": "32GB DDR4 3600MHz",
@@ -167,10 +172,10 @@ with app.app_context():
             ),
             Product(
                 name="AMD Threadripper Workstation",
-                price=2499.99,
+                price=214999.99,
                 category="prebuilt",
                 description="Extreme performance workstation with AMD Threadripper CPU",
-                image_url="https://via.placeholder.com/300x200?text=AMD+Workstation",
+                image_url="https://i.ytimg.com/vi/5_njmb20zQA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCX4cTDDUb5VAk0esPpCpN-CurLUw",
                 specs={
                     "cpu": "AMD Threadripper 3970X",
                     "ram": "128GB DDR4 3200MHz",
@@ -180,10 +185,10 @@ with app.app_context():
             ),
             Product(
                 name="AMD Budget Gaming PC",
-                price=799.99,
+                price=69099.99,
                 category="prebuilt",
                 description="Affordable gaming PC with AMD Ryzen 5 processor",
-                image_url="https://via.placeholder.com/300x200?text=AMD+Budget+PC",
+                image_url="https://cdn.mos.cms.futurecdn.net/b2W4pMBWM2Rjrf49S2vzRB.jpg",
                 specs={
                     "cpu": "AMD Ryzen 5 5600X",
                     "ram": "16GB DDR4 3200MHz",
@@ -193,10 +198,10 @@ with app.app_context():
             ),
             Product(
                 name="PlayStation 5",
-                price=499.99,
+                price=54999.99,
                 category="console",
                 description="Next-generation gaming console from Sony",
-                image_url="https://via.placeholder.com/300x200?text=PlayStation+5",
+                image_url="https://m.media-amazon.com/images/I/51ljnEaW0pL.jpg",
                 specs={
                     "cpu": "8-core AMD Zen 2",
                     "gpu": "AMD RDNA 2",
@@ -205,10 +210,10 @@ with app.app_context():
             ),
             Product(
                 name="Xbox Series X",
-                price=499.99,
+                price=55999.99,
                 category="console",
                 description="Next-generation gaming console from Microsoft",
-                image_url="https://via.placeholder.com/300x200?text=Xbox+Series+X",
+                image_url="https://m.media-amazon.com/images/I/616klipzdtL._AC_UF894,1000_QL80_.jpg",
                 specs={
                     "cpu": "8-core AMD Zen 2",
                     "gpu": "AMD RDNA 2",
@@ -1026,3 +1031,18 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_template('error.html', error='Server error'), 500
+@app.route('/place_order', methods=['POST'])
+def place_order():
+    # Your order placing logic
+    return redirect(url_for('order_confirmation'))  # Assuming an order confirmation route
+@app.route('/order_confirmation')
+def order_confirmation():
+    order_data = {
+        'order_id': 12345,
+        'customer_name': 'John Doe',
+        'total_amount': 299.99,
+        'shipping_address': '1234 Elm Street, City, Country',
+        'payment_method': 'Credit Card'
+    }
+    
+    return render_template('order_confirmation.html', **order_data)
