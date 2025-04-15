@@ -1046,3 +1046,9 @@ def order_confirmation():
     }
     
     return render_template('order_confirmation.html', **order_data)
+    
+@app.route('/save_custom_pc', methods=['POST'])
+def save_custom_pc():
+    # Your logic for saving the custom PC
+    return 'PC saved!'
+
